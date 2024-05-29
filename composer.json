@@ -1,6 +1,6 @@
 {
     "name": "vectorial1024/laravel-cache-evict",
-    "description": "Efficiently remove expired Laravel cache files/database rows",
+    "description": "Efficiently remove expired Laravel cache data",
     "type": "library",
     "license": "MIT",
     "autoload": {
