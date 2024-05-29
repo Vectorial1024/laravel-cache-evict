@@ -2,6 +2,8 @@
 
 namespace Vectorial1024\LaravelCacheEvict;
 
+use Vectorial1024\LaravelCacheEvict\File\FileEvictStrategy;
+
 /**
  * The static class that remembers how to evict caches of various cache drivers.
  */
@@ -11,6 +13,11 @@ class CacheEvictStrategies
 
     public const DRIVER_REDIS = 'redis';
 
+    public const DRIVER_FILE = 'file';
+
+    /**
+     * @var array<string, class-string> the map of driver to eviction strategy
+     */
     protected static array $strategyMap = [];
 
     /**
@@ -32,6 +39,24 @@ class CacheEvictStrategies
         // and then re-register the default strategies
         self::registerDriverRefusedBecauseFeatureExists(self::DRIVER_MEMCACHED);
         self::registerDriverRefusedBecauseFeatureExists(self::DRIVER_REDIS);
+
+        self::registerDriverStrategy(self::DRIVER_FILE, FileEvictStrategy::class);
+    }
+
+    /**
+     * Register a certain driver to have a certain eviction strategy, if there are no strategies defined for the given driver yet.
+     * @param string $driverName
+     * @param class-string $strategyClass
+     */
+    public static function registerDriverStrategy(string $driverName, string $strategyClass)
+    {
+        if (isset(self::$strategyMap[$driverName])) {
+            return;
+        }
+        if (!is_subclass_of($strategyClass, AbstractEvictStrategy::class)) {
+            throw new \InvalidArgumentException("The provided eviction strategy for '{$driverName}' must extend " . AbstractEvictStrategy::class . ".");
+        }
+        self::$strategyMap[$driverName] = $strategyClass;
     }
 
     /**
@@ -51,10 +76,16 @@ class CacheEvictStrategies
      * Returns the eviction strategy for the given cache driver.
      * @throws EvictionRefusedFeatureExistsException thrown when we refuse to handle the given driver because it has its own eviction manager
      */
-    public static function getEvictionStrategy(string $driverName)
+    public static function getEvictionStrategy(string $driverName): ?AbstractEvictStrategy
     {
         if (isset(self::$wontDoMap[$driverName])) {
             throw new EvictionRefusedFeatureExistsException();
         }
+        if (isset(self::$strategyMap[$driverName])) {
+            $className = self::$strategyMap[$driverName];
+            return new $className();
+        }
+        // what is this?
+        return null;
     }
 }
