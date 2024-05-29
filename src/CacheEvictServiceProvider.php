@@ -11,7 +11,7 @@ class CacheEvictServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        CacheEvictStrategies::initOrReset();
     }
 
     /**
