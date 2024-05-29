@@ -22,5 +22,12 @@
     },
     "scripts": {
         "test": "vendor/bin/phpunit tests"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Vectorial1024\\LaravelCacheEvict\\CacheEvictServiceProvider"
+            ]
+        }
     }
 }
