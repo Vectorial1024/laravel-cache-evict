@@ -27,7 +27,15 @@ class CacheEvictCommand extends Command
      */
     public function handle(): int
     {
-        $this->info("Hello world!");
+        // we will deal with the default cache for now
+        $cacheTarget = null;
+        if (!$cacheTarget) {
+            $cacheTarget = config('cache.default');
+            $this->info("No cache store provided; targetting default store '{$cacheTarget}'");
+        }
+
+        // determine eviction eligibility/strategy
+
         return self::SUCCESS;
     }
 }
