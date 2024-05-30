@@ -5,6 +5,7 @@ namespace Vectorial1024\LaravelCacheEvict\File;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use Vectorial1024\LaravelCacheEvict\AbstractEvictStrategy;
+use Wilderborn\Partyline\Facade as Partyline;
 
 class FileEvictStrategy extends AbstractEvictStrategy
 {
@@ -31,7 +32,8 @@ class FileEvictStrategy extends AbstractEvictStrategy
         // we use a memory-efficient way of deleting items.
         // we also use native functions if it makes sense
         // testing: print all the directories
+        Partyline::info("Finding the cache directories...");
         $allDirs = $this->filesystem->allDirectories();
-        var_dump($allDirs);
+        Partyline::info("Found " . count($allDirs) . " cache directories to evict items.");
     }
 }

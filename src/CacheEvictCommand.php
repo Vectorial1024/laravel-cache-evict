@@ -27,6 +27,9 @@ class CacheEvictCommand extends Command
      */
     public function handle(): int
     {
+        // bind to partyline for easier output printing
+        \Partyline::bind($this);
+
         // we will deal with the default cache for now
         $cacheTarget = null;
         if (!$cacheTarget) {
@@ -64,6 +67,7 @@ class CacheEvictCommand extends Command
         $this->info("Evicting expired items...");
         $evictStrat->execute();
 
+        $this->info("Eviction complete.");
         return self::SUCCESS;
     }
 }
