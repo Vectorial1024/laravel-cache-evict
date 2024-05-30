@@ -49,7 +49,7 @@ class CacheEvictCommand extends Command
         }
         $this->info("The cache driver is '{$cacheDriver}'");
         try {
-            $evictStrat = CacheEvictStrategies::getEvictionStrategy($cacheDriver);
+            $evictStrat = CacheEvictStrategies::getEvictionStrategy($cacheTarget, $cacheDriver);
             if ($evictStrat === null) {
                 // we don't know what this is and therefore how to handle this
                 $this->warn("Cache store '{$cacheTarget}' is using cache driver '{$cacheDriver}', but it does not have any corresponding eviction strategy. Perhaps the strategies are incomplete?");
@@ -61,6 +61,8 @@ class CacheEvictCommand extends Command
         }
 
         // do the eviction
+        $this->info("Evicting expired items...");
+        $evictStrat->execute();
 
         return self::SUCCESS;
     }

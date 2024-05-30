@@ -73,17 +73,19 @@ class CacheEvictStrategies
     }
 
     /**
-     * Returns the eviction strategy for the given cache driver.
+     * Returns the eviction strategy for the given cache store and the cache driver.
+     * @param string $storeName the name of the cache store
+     * @param string $driverName the name of the cache driver
      * @throws EvictionRefusedFeatureExistsException thrown when we refuse to handle the given driver because it has its own eviction manager
      */
-    public static function getEvictionStrategy(string $driverName): ?AbstractEvictStrategy
+    public static function getEvictionStrategy(string $storeName, string $driverName): ?AbstractEvictStrategy
     {
         if (isset(self::$wontDoMap[$driverName])) {
             throw new EvictionRefusedFeatureExistsException();
         }
         if (isset(self::$strategyMap[$driverName])) {
             $className = self::$strategyMap[$driverName];
-            return new $className();
+            return new $className($storeName);
         }
         // what is this?
         return null;
