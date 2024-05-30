@@ -17,6 +17,8 @@ class FileEvictStrategy extends AbstractEvictStrategy
     protected int $deletedFileSize = 0;
     protected int $deletedDirs = 0;
 
+    protected float $elapsedTime = 0;
+
     public function __construct(string $storeName)
     {
         parent::__construct($storeName);    
@@ -37,9 +39,11 @@ class FileEvictStrategy extends AbstractEvictStrategy
         $this->deletedFiles = 0;
         $this->deletedFileSize = 0;
         $this->deletedDirs = 0;
+        $this->elapsedTime = 0;
 
         // we use a memory-efficient way of deleting items.
         // we also use native functions if it makes sense
+        $startUnix = microtime(true);
         Partyline::info("Finding the cache directories...");
         $allDirs = $this->filesystem->allDirectories();
         Partyline::info("Found " . count($allDirs) . " cache directories to evict items; processing...");
@@ -64,8 +68,11 @@ class FileEvictStrategy extends AbstractEvictStrategy
         }
 
         // all is done; print some stats
+        $endUnix = microtime(true);
+        $this->elapsedTime = $endUnix - $startUnix;
         // generate a human readable file size
         $readableFileSize = $this->bytesToHuman($this->deletedFileSize);
+        Partyline::info("Took {$this->elapsedTime} seconds.");
         Partyline::info("Removed {$this->deletedFiles} expired cache files. Estimated total size: $readableFileSize");
         Partyline::info("Removed {$this->deletedDirs} empty directories.");
     }
