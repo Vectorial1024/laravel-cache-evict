@@ -80,7 +80,7 @@ class FileEvictStrategy extends AbstractEvictStrategy
     protected function handleCacheFilesInDirectory(string $dirName)
     {
         $localPath = $this->filesystem->path($dirName);
-        Partyline::info("Checking $localPath...");
+        // Partyline::info("Checking $localPath...");
 
         // remove files inside directory
         /** @var \SplFileInfo $fileInfo */
@@ -94,7 +94,7 @@ class FileEvictStrategy extends AbstractEvictStrategy
 
             $realPath = $fileInfo->getRealPath();
             $shortFileName = $dirName . DIRECTORY_SEPARATOR . $fileInfo->getFilename();
-            Partyline::info("Checking file $realPath...");
+            // Partyline::info("Checking file $realPath...");
             try {
                 // read expiry
                 // the first 10 characters form the expiry timestamp
