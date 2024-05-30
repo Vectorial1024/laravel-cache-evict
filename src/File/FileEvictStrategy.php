@@ -6,6 +6,7 @@ use DirectoryIterator;
 use ErrorException;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Vectorial1024\LaravelCacheEvict\AbstractEvictStrategy;
 use Wilderborn\Partyline\Facade as Partyline;
 
@@ -48,15 +49,24 @@ class FileEvictStrategy extends AbstractEvictStrategy
         $allDirs = $this->filesystem->allDirectories();
         Partyline::info("Found " . count($allDirs) . " cache directories to evict items; processing...");
 
+        // create a progress bar to display our progress
+        /** @var ProgressBar $progressBar */
+        $progressBar = $this->output->createProgressBar();
+        $progressBar->setMaxSteps(count($allDirs));
+
         foreach ($allDirs as $dir) {
             // we will have some verbose printing for now to test this feature.
             $this->handleCacheFilesInDirectory($dir);
+            $progressBar->advance();
             // sleep(1);
         }
 
+        $progressBar->finish();
+        unset($progressBar);
         Partyline::info("Expired cache files evicted; checking empty directories...");
         // since allDir is an array with contents like "0", "0/0", "0/1", ... "1", ...
         // we can reverse it to effectively remove directories
+        // supposedly removing directories is very fast, so no progress bars here
         foreach (array_reverse($allDirs) as $dir) {
             try {
                 $localPath = $this->filesystem->path($dir);

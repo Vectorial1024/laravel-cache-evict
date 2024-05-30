@@ -58,6 +58,7 @@ class CacheEvictCommand extends Command
                 $this->warn("Cache store '{$cacheTarget}' is using cache driver '{$cacheDriver}', but it does not have any corresponding eviction strategy. Perhaps the strategies are incomplete?");
                 return self::INVALID;
             }
+            $evictStrat->setOutput($this->output);
         } catch (EvictionRefusedFeatureExistsException) {
             $this->warn("Cache store '{$cacheTarget}' is using cache driver '{$cacheDriver}', but said driver already has its own key eviction strategies. Please refer to their documentation on how to evict keys.");
             return self::INVALID;
