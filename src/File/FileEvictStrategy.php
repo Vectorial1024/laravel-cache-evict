@@ -111,6 +111,7 @@ class FileEvictStrategy extends AbstractEvictStrategy
                 // read expiry
                 // the first 10 characters form the expiry timestamp
                 $size = $fileInfo->getSize();
+                // no obvious performance improvement when using fopen; using file_get_contents for its simplicity 
                 $expiry = (int) file_get_contents($realPath, length: 10);
                 if (time() < $expiry) {
                     // not expired yet
