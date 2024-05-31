@@ -63,6 +63,8 @@ class FileEvictStrategy extends AbstractEvictStrategy
 
         $progressBar->finish();
         unset($progressBar);
+        // progress bar next empty line
+        Partyline::info("");
         Partyline::info("Expired cache files evicted; checking empty directories...");
         // since allDir is an array with contents like "0", "0/0", "0/1", ... "1", ...
         // we can reverse it to effectively remove directories
