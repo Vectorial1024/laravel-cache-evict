@@ -2,6 +2,7 @@
 
 namespace Vectorial1024\LaravelCacheEvict;
 
+use Vectorial1024\LaravelCacheEvict\Database\DatabaseEvictStrategy;
 use Vectorial1024\LaravelCacheEvict\File\FileEvictStrategy;
 
 /**
@@ -14,6 +15,8 @@ class CacheEvictStrategies
     public const DRIVER_REDIS = 'redis';
 
     public const DRIVER_FILE = 'file';
+
+    public const DRIVER_DATABASE = 'database';
 
     /**
      * @var array<string, class-string> the map of driver to eviction strategy
@@ -41,6 +44,7 @@ class CacheEvictStrategies
         self::registerDriverRefusedBecauseFeatureExists(self::DRIVER_REDIS);
 
         self::registerDriverStrategy(self::DRIVER_FILE, FileEvictStrategy::class);
+        self::registerDriverStrategy(self::DRIVER_DATABASE, DatabaseEvictStrategy::class);
     }
 
     /**
