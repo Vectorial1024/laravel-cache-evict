@@ -47,7 +47,7 @@ class FileEvictStrategy extends AbstractEvictStrategy
         $startUnix = microtime(true);
         Partyline::info("Finding the cache directories...");
         $allDirs = $this->filesystem->allDirectories();
-        Partyline::info("Found " . count($allDirs) . " cache directories to evict items; processing...");
+        Partyline::info("Found " . count($allDirs) . " cache directories to evict expired items; processing...");
 
         // create a progress bar to display our progress
         /** @var ProgressBar $progressBar */
@@ -68,7 +68,7 @@ class FileEvictStrategy extends AbstractEvictStrategy
         Partyline::info("Expired cache files evicted; checking empty directories...");
         // since allDir is an array with contents like "0", "0/0", "0/1", ... "1", ...
         // we can reverse it to effectively remove directories
-        // supposedly removing directories is very fast, so no progress bars here
+        // in theory removing directories is very fast, so no progress bars here
         foreach (array_reverse($allDirs) as $dir) {
             try {
                 $localPath = $this->filesystem->path($dir);

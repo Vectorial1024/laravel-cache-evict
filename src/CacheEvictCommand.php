@@ -34,16 +34,16 @@ class CacheEvictCommand extends Command
         $cacheTarget = $this->argument('target');
         if (!$cacheTarget) {
             $cacheTarget = config('cache.default');
-            $this->info("No cache store provided; targeting default store '{$cacheTarget}'");
+            $this->info("No cache store target provided; targeting default store '{$cacheTarget}'");
         }
 
         // determine eviction eligibility/strategy
         $cacheConfig = config("cache.stores.{$cacheTarget}");
         if (!$cacheConfig) {
-            $this->error("Cache store '{$cacheTarget}' does not exist, could not read its details; aborting.");
+            $this->error("Cache store '{$cacheTarget}' does not exist; aborting.");
             return self::FAILURE;
         }
-        $this->info("Reading details of cache store '{$cacheTarget}'");
+        $this->info("Reading details of cache store '{$cacheTarget}'...");
         // driver is basically required, but just in case
         $cacheDriver = config("cache.stores.{$cacheTarget}.driver");
         if (!$cacheDriver) {
@@ -60,7 +60,7 @@ class CacheEvictCommand extends Command
             }
             $evictStrat->setOutput($this->output);
         } catch (EvictionRefusedFeatureExistsException) {
-            $this->warn("Cache store '{$cacheTarget}' is using cache driver '{$cacheDriver}', but said driver already has its own key eviction strategies. Please refer to their documentation on how to evict keys.");
+            $this->warn("Cache store '{$cacheTarget}' is using cache driver '{$cacheDriver}', but has its own eviction mechanisms; please check their documentations instead.");
             return self::INVALID;
         }
 
