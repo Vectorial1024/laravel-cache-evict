@@ -24,6 +24,13 @@ via Composer:
 
 (WIP)
 
+## Supported cache types
+The following cache drivers from `cache.php` are currently supported:
+- `database`
+- `file`
+
+Some drivers (e.g. `memcached`, `redis`) will never be supported because they have their own item eviction mechanism. For those drivers, you should use those features instead of using this library.
+
 # Usage
 
 You may run this in the command line:
@@ -50,10 +57,6 @@ Schedule::command(CacheEvictCommand::class)->daily()->runInBackground();
 // you may also specify the cache to clear; e.g. the file cache defined in cache.php:
 Schedule::command(CacheEvictCommand::class, ['target' => 'file'])->daily()->runInBackground();
 ```
-
-## When to not use this?
-Some cache drivers actually have their own eviction mechanisms, e.g. Redis (and its many forks) has their own key eviction strategies.
-In this case, this library will refuse to evict your cache, and you should check the respective external documentation on how to manage those expired cache items.
 
 ## The relationship with `cache.php`
 This library checks the cache *name* (not *driver*!) inside `cache.php` to determine which cache to clear. This means, if you have the following `cache.php` ...
