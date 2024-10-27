@@ -25,7 +25,9 @@ This library is designed to be memory efficient, so even if there are a lot of i
 # Install
 via Composer:
 
-(WIP)
+```sh
+composer require vectorial1024/laravel-cache-evict
+```
 
 ## Supported cache types
 The following cache drivers from `cache.php` are currently supported:
