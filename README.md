@@ -34,9 +34,15 @@ php artisan cache:evict
 
 Or, you may put this into your console kernel schedule:
 
-(WIP)
+```php
+use Vectorial1024\LaravelCacheEvict\CacheEvictCommand;
 
-## Command line arguments
+// note: because this command may have long running time, it is strongly recommended to run this command in the background
+// this avoids accidentally delaying other scheduled tasks
+Schedule::command(CacheEvictCommand::class)->daily()->runInBackground();
+```
+
+## Command arguments
 ```
 cache:evict {target?}
 ```
