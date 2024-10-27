@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f8011a07c13ccd663e540811c3497d8a",
+    "content-hash": "b432db9a00382fe83beb69aa63f242e7",
     "packages": [
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -694,6 +694,47 @@
                 "source": "https://github.com/php-fig/simple-cache/tree/3.0.0"
             },
             "time": "2021-10-29T13:26:27+00:00"
+        },
+        {
+            "name": "ramazancetinkaya/byte-formatter",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ramazancetinkaya/byte-formatter.git",
+                "reference": "31bd68bd99dec9a8435863886d0913d943dbf36a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ramazancetinkaya/byte-formatter/zipball/31bd68bd99dec9a8435863886d0913d943dbf36a",
+                "reference": "31bd68bd99dec9a8435863886d0913d943dbf36a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ramazancetinkaya\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ramazan Çetinkaya",
+                    "email": "ramazancetinkayadev@outlook.com",
+                    "homepage": "https://github.com/ramazancetinkaya"
+                }
+            ],
+            "description": "A PHP library to format bytes into human-readable format and vice versa.",
+            "support": {
+                "issues": "https://github.com/ramazancetinkaya/byte-formatter/issues",
+                "source": "https://github.com/ramazancetinkaya/byte-formatter/tree/1.0.0"
+            },
+            "time": "2023-12-29T14:02:12+00:00"
         },
         {
             "name": "symfony/clock",

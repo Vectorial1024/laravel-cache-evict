@@ -119,12 +119,4 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
         }
         // loop exit handled inside while loop
     }
-
-    private function bytesToHuman($bytes)
-    {
-        // see https://stackoverflow.com/questions/15188033/human-readable-file-size
-        $units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
-        for ($i = 0; $bytes > 1024; $i++) $bytes /= 1024;
-        return round($bytes, 2) . ' ' . $units[$i];
-    }
 }
