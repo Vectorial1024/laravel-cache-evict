@@ -54,3 +54,32 @@ Schedule::command(CacheEvictCommand::class, ['target' => 'file'])->daily()->runI
 ## When to not use this?
 Some cache drivers actually have their own eviction mechanisms, e.g. Redis (and its many forks) has their own key eviction strategies.
 In this case, this library will refuse to evict your cache, and you should check the respective external documentation on how to manage those expired cache items.
+
+## The relationship with `cache.php`
+This library checks the cache *name* (not *driver*!) inside `cache.php` to determine which cache to clear. This means, if you have the following `cache.php` ...
+
+```php
+[
+    'stores' => [
+        'local_store' => [
+            'driver' => 'file',
+            // other config...
+        ],
+
+        'another_store' => [
+            'driver' => 'file',
+            // other config...
+        ],
+    ],
+]
+```
+
+... and you run the command like this ...
+
+```sh
+php artisan cache:evict local_store
+```
+
+... then, you will only evict the `local_store` cache. The library will then notice `local_store` is using the `file` driver, and will evict items using the file eviction strategy.
+
+The `another_store` cache is unaffected, assuming you configured both to store the cache data at different directories.
