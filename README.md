@@ -29,7 +29,11 @@ via Composer:
 You may run this in the command line:
 
 ```sh
+# evicts the default cache in your Laravel app
 php artisan cache:evict
+
+# you may also specify the cache to clear; e.g. the file cache defined in cache.php:
+php artisan cache:evict file
 ```
 
 Or, you may put this into your console kernel schedule:
@@ -39,14 +43,14 @@ use Vectorial1024\LaravelCacheEvict\CacheEvictCommand;
 
 // note: because this command may have long running time, it is strongly recommended to run this command in the background
 // this avoids accidentally delaying other scheduled tasks
+
+// evicts the default cache in your Laravel app
 Schedule::command(CacheEvictCommand::class)->daily()->runInBackground();
+
+// you may also specify the cache to clear; e.g. the file cache defined in cache.php:
+Schedule::command(CacheEvictCommand::class, ['target' => 'file'])->daily()->runInBackground();
 ```
 
-## Command arguments
-```
-cache:evict {target?}
-```
-
-`target` (optional): the Laravel cache to evict items; this is the name of the array key in your Laravel `cache.php` file, inside the `stores` array.
-
-If `target` is not provided, then the default Laravel cache will be targetted.
+## When to not use this?
+Some cache drivers actually have their own eviction mechanisms, e.g. Redis (and its many forks) has their own key eviction strategies.
+In this case, this library will refuse to evict your cache, and you should check the respective external documentation on how to manage those expired cache items.
