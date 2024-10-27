@@ -3,6 +3,7 @@
 [![Packagist Version][packagist-version-image]][packagist-url]
 [![Packagist Downloads][packagist-downloads-image]][packagist-stats-url]
 [![PHP Dependency Version][php-version-image]][packagist-url]
+[![GitHub Actions Workflow Status][php-build-status-image]][github-actions-url]
 
 Efficiently remove expired cache data in Laravel.
 
@@ -115,8 +116,10 @@ public function boot()
 
 [packagist-url]: https://packagist.org/packages/vectorial1024/laravel-cache-evict
 [packagist-stats-url]: https://packagist.org/packages/vectorial1024/laravel-cache-evict/stats
+[github-actions-url]: https://github.com/Vectorial1024/laravel-cache-evict/actions/workflows/php.yml
 
 [packagist-license-image]: https://img.shields.io/packagist/l/vectorial1024/laravel-cache-evict?style=plastic
 [packagist-version-image]: https://img.shields.io/packagist/v/vectorial1024/laravel-cache-evict?style=plastic
 [packagist-downloads-image]: https://img.shields.io/packagist/dm/vectorial1024/laravel-cache-evict?style=plastic
 [php-version-image]: https://img.shields.io/packagist/dependency-v/vectorial1024/laravel-cache-evict/php?style=plastic&label=PHP
+[php-build-status-image]: https://img.shields.io/github/actions/workflow/status/Vectorial1024/laravel-cache-evict/php.yml?style=plastic
