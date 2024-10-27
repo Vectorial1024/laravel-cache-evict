@@ -11,7 +11,7 @@ class CacheEvictCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'cache:evict';
+    protected $signature = 'cache:evict {target?}';
 
     /**
      * The console command description.
@@ -30,8 +30,8 @@ class CacheEvictCommand extends Command
         // bind to partyline for easier output printing
         \Partyline::bind($this);
 
-        // we will deal with the default cache for now
-        $cacheTarget = null;
+        // determine target cache to evict items
+        $cacheTarget = $this->argument('target');
         if (!$cacheTarget) {
             $cacheTarget = config('cache.default');
             $this->info("No cache store provided; targeting default store '{$cacheTarget}'");
