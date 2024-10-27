@@ -8,6 +8,11 @@
             "Vectorial1024\\LaravelCacheEvict\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Vectorial1024\\LaravelCacheEvict\\Test\\": "test/"
+        }
+    },
     "authors": [
         {
             "name": "Vectorial1024"
@@ -23,7 +28,7 @@
         "phpunit/phpunit": "^10.4"
     },
     "scripts": {
-        "test": "vendor/bin/phpunit tests"
+        "test": "vendor/bin/phpunit test"
     },
     "extra": {
         "laravel": {
