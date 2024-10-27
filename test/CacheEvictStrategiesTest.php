@@ -13,6 +13,11 @@ class CacheEvictStrategiesTest extends TestCase
     public function setUp(): void
     {
         CacheEvictStrategies::initOrReset();
+
+        // set up cache configs
+        // path does not matter at the moment
+        // todo mark the directory correctly
+        Config::set('cache.stores.file.path', 'asdf');
     }
 
     public function testCorrectPresetStrategies()
@@ -25,8 +30,6 @@ class CacheEvictStrategiesTest extends TestCase
         $strategy = CacheEvictStrategies::getEvictionStrategy('', CacheEvictStrategies::DRIVER_REDIS);
 
         // mock as if we have some proper config
-        // path does not matter at the moment
-        Config::set('cache.stores.file.path', 'asdf');
         $strategy = CacheEvictStrategies::getEvictionStrategy('file', CacheEvictStrategies::DRIVER_FILE);
         $this->assertInstanceOf(FileEvictStrategy::class, $strategy);
     }
