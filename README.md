@@ -28,11 +28,19 @@ via Composer:
 
 You may run this in the command line:
 
-(WIP)
+```sh
+php artisan cache:evict
+```
 
 Or, you may put this into your console kernel schedule:
 
 (WIP)
 
 ## Command line arguments
-(WIP)
+```
+cache:evict {target?}
+```
+
+`target` (optional): the Laravel cache to evict items; this is the name of the array key in your Laravel `cache.php` file, inside the `stores` array.
+
+If `target` is not provided, then the default Laravel cache will be targetted.
