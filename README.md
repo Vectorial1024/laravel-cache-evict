@@ -31,6 +31,8 @@ The following cache drivers from `cache.php` are currently supported:
 
 Some drivers (e.g. `memcached`, `redis`) will never be supported because they have their own item eviction mechanism. For those drivers, you should use those features instead of using this library.
 
+Obviously, perhaps you are using your own cache driver which this library does not know about, but that you know how to evict the caches. In this case, you may define your own cache eviction strategies and register them to this library (see Advanced Usage section).
+
 # Usage
 
 You may run this in the command line:
@@ -86,3 +88,22 @@ php artisan cache:evict local_store
 ... then, you will only evict the `local_store` cache. The library will then notice `local_store` is using the `file` driver, and will evict items using the file eviction strategy.
 
 The `another_store` cache is unaffected, assuming you configured both to store the cache data at different directories.
+
+# Advanced usage
+
+## Defining your own eviction strategies
+This allows you to define cache eviction strategies that this library does not provide out-of-the-box, and use them as if you are still using this library (e.g. you keep the cli `php artisan cache:evict` command)
+
+Simply create your Laravel service provider, and do the following:
+
+```php
+public function boot()
+{
+    // register a handler for a specific cache driver
+    // YourEvictStrategy extends Vectorial1024\LaravelCacheEvict\AbstractEvictStrategy
+    CacheEvictStrategies::registerDriverStrategy('your_driver_name', YourEvictStrategy::class);
+
+    // or, register that a specific cache driver should not be handled because it has its own handler already
+    CacheEvictStrategies::registerDriverRefusedBecauseFeatureExists('self_managed_driver_name');
+}
+```
