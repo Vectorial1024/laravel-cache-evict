@@ -92,6 +92,13 @@ php artisan cache:evict local_store
 
 ... then, you will only evict the `local_store` cache. The `another_store` cache is unaffected by this command (assuming both are using separate directories, of course).
 
+# Testing
+Using `orchestra/testbench` (customized PHPUnit) via Composer:
+
+```sh
+composer run-script test
+```
+
 # Frequently-asked questions (FAQ)
 
 ## How to define custom eviction strategies?
