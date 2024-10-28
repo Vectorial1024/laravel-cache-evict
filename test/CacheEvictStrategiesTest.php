@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Orchestra\Testbench\TestCase;
 use Vectorial1024\LaravelCacheEvict\CacheEvictStrategies;
+use Vectorial1024\LaravelCacheEvict\Database\DatabaseEvictStrategy;
 use Vectorial1024\LaravelCacheEvict\EvictionRefusedFeatureExistsException;
 use Vectorial1024\LaravelCacheEvict\File\FileEvictStrategy;
 
@@ -18,12 +19,27 @@ class CacheEvictStrategiesTest extends TestCase
         CacheEvictStrategies::initOrReset();
 
         // set up cache configs
+        // these configs are basically copied over from the laravel default settings
+        $projectRoot = dirname(dirname(__FILE__));
 
         // file cache
-        $fileCacheDir = dirname(dirname(__FILE__))."/storage/framework/cache/data";
+        $fileCacheDir = "$projectRoot/storage/framework/cache/data";
         Config::set('cache.stores.file.driver', 'file');
         Config::set('cache.stores.file.path', $fileCacheDir);
         Config::set('cache.stores.file.lock_path', $fileCacheDir);
+
+        // sqlite database
+        Config::set('database.connections.sqlite.driver', 'sqlite');
+        Config::set('database.connections.sqlite.url', '');
+        Config::set('database.connections.sqlite.database', "$projectRoot/database/database.sqlite");
+        Config::set('database.connections.sqlite.prefix', '');
+        Config::set('database.connections.sqlite.foreign_key_constraints', true);
+
+        // then, database cache
+        Config::set('cache.stores.database.driver', 'database');
+        Config::set('cache.stores.database.table', 'cache');
+        Config::set('cache.stores.database.connection', 'sqlite');
+        Config::set('cache.stores.database.lock_connection', '');
     }
 
     protected function getPackageProviders($app)
@@ -46,6 +62,9 @@ class CacheEvictStrategiesTest extends TestCase
         // mock as if we have some proper config
         $strategy = CacheEvictStrategies::getEvictionStrategy('file', CacheEvictStrategies::DRIVER_FILE);
         $this->assertInstanceOf(FileEvictStrategy::class, $strategy);
+
+        $strategy = CacheEvictStrategies::getEvictionStrategy('database', CacheEvictStrategies::DRIVER_DATABASE);
+        $this->assertInstanceOf(DatabaseEvictStrategy::class, $strategy);
     }
 
     public function testFileCacheEviction()
