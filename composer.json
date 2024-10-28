@@ -23,7 +23,7 @@
         "phpunit/phpunit": "^10.4"
     },
     "scripts": {
-        "test": "vendor/bin/phpunit tests"
+        "test": "vendor/bin/phpunit test"
     },
     "extra": {
         "laravel": {
