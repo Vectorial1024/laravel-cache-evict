@@ -26,6 +26,14 @@ class CacheEvictStrategiesTest extends TestCase
         Config::set('cache.stores.file.lock_path', $fileCacheDir);
     }
 
+    protected function getPackageProviders($app)
+    {
+        // load required package providers for partyline to work
+        return [
+            \Wilderborn\Partyline\ServiceProvider::class
+        ];
+    }
+
     public function testCorrectPresetStrategies()
     {
         // store name does not matter at the moment
