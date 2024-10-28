@@ -2,6 +2,7 @@
 
 namespace Vectorial1024\LaravelCacheEvict\Test;
 
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Orchestra\Testbench\TestCase;
@@ -168,5 +169,31 @@ class CacheEvictStrategiesTest extends TestCase
             "File cache" => ['file', CacheEvictStrategies::DRIVER_FILE],
             "Database cache" => ['database', CacheEvictStrategies::DRIVER_DATABASE],
         ];
+    }
+
+    // ---
+
+    public function call($method, $uri, $parameters = [], $files = [], $server = [], $content = null, $changeHistory = true)
+    {
+        // pass
+        return;
+    }
+
+    public function be(Authenticatable $user, $driver = null)
+    {
+        // pass
+        return;
+    }
+
+    public function seed($class = 'DatabaseSeeder')
+    {
+        // pass
+        return;
+    }
+
+    public function artisan($command, $parameters = [])
+    {
+        // pass
+        return;
     }
 }
