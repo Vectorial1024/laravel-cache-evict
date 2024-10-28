@@ -37,7 +37,7 @@ The following cache drivers from `cache.php` are currently supported:
 
 Some drivers (e.g. `memcached`, `redis`) will never be supported because they have their own item eviction mechanism. For those drivers, you should use those features instead of using this library.
 
-Obviously, perhaps you are using your own cache driver which this library does not know about, but that you know how to evict the caches. In this case, you may define your own cache eviction strategies and register them to this library (see Advanced Usage section).
+Obviously, perhaps you are using your own cache driver which this library does not know about, but that you know how to evict the caches. In this case, you may define your own cache eviction strategies and register them to this library (see FAQ section).
 
 # Usage
 
@@ -95,12 +95,10 @@ php artisan cache:evict local_store
 
 The `another_store` cache is unaffected, assuming you configured both to store the cache data at different directories.
 
-# Advanced usage
+# Frequently-asked questions (FAQ)
 
-## Defining your own eviction strategies
-This allows you to define cache eviction strategies that this library does not provide out-of-the-box, and use them as if you are still using this library (e.g. you keep the cli `php artisan cache:evict` command)
-
-Simply create your Laravel service provider, and do the following:
+## How to define custom eviction strategies?
+You can do so inside your Laravel service provider. Simply do the following:
 
 ```php
 public function boot()
@@ -113,8 +111,6 @@ public function boot()
     CacheEvictStrategies::registerDriverRefusedBecauseFeatureExists('self_managed_driver_name');
 }
 ```
-
-# Frequently-asked questions
 
 ## Will this library help me reclaim `database` disk spaces?
 No, but if you are using this library regularly to evict expired items, then you do not need to worry about reclaiming free space. This topic is best discussed with a system admin/database specialist.
