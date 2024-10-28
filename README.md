@@ -114,6 +114,11 @@ public function boot()
 }
 ```
 
+# Frequently-asked questions
+
+## Will this library help me reclaim `database` disk spaces?
+No, but if you are using this library regularly to evict expired items, then you do not need to worry about reclaiming free space. This topic is best discussed with a system admin/database specialist.
+
 [packagist-url]: https://packagist.org/packages/vectorial1024/laravel-cache-evict
 [packagist-stats-url]: https://packagist.org/packages/vectorial1024/laravel-cache-evict/stats
 [github-actions-url]: https://github.com/Vectorial1024/laravel-cache-evict/actions/workflows/php.yml
