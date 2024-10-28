@@ -25,7 +25,8 @@
         "ramazancetinkaya/byte-formatter": "^1.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^10.4"
+        "phpunit/phpunit": "^10.4",
+        "orchestra/testbench": "^9.5"
     },
     "scripts": {
         "test": "vendor/bin/phpunit test"

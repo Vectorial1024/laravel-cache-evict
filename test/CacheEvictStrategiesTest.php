@@ -4,7 +4,7 @@ namespace Vectorial1024\LaravelCacheEvict\Test;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
-use PHPUnit\Framework\TestCase;
+use Orchestra\Testbench\TestCase;
 use Vectorial1024\LaravelCacheEvict\CacheEvictStrategies;
 use Vectorial1024\LaravelCacheEvict\EvictionRefusedFeatureExistsException;
 use Vectorial1024\LaravelCacheEvict\File\FileEvictStrategy;
@@ -13,6 +13,8 @@ class CacheEvictStrategiesTest extends TestCase
 {
     public function setUp(): void
     {
+        parent::setUp();
+
         CacheEvictStrategies::initOrReset();
 
         // set up cache configs
