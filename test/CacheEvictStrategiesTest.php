@@ -14,7 +14,7 @@ use Vectorial1024\LaravelCacheEvict\File\FileEvictStrategy;
 
 class CacheEvictStrategiesTest extends TestCase
 {
-    private string $sqliteDbName; 
+    private string $sqliteDbName;
     private SQLite3 $sqliteDb;
 
     public function setUp(): void
@@ -36,9 +36,6 @@ class CacheEvictStrategiesTest extends TestCase
         // sqlite database
         // we need to set up an SQLite db file on disk, so that the test script can correctly use it
         $this->sqliteDbName = "$projectRoot/database/database.sqlite";
-        if (file_exists($this->sqliteDbName)) {
-            unlink($this->sqliteDbName);
-        }
         $this->sqliteDb = new SQLite3($this->sqliteDbName);
         $this->sqliteDb->exec(<<<SQL
             CREATE TABLE "cache" (
@@ -63,9 +60,10 @@ class CacheEvictStrategiesTest extends TestCase
         Config::set('cache.stores.database.lock_connection', '');
     }
 
-    public function __destruct()
+    public function tearDown(): void
     {
-        // remove the sqlite file
+        parent::tearDown();
+
         $this->sqliteDb->close();
         unlink($this->sqliteDbName);
     }
