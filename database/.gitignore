@@ -1,2 +1,0 @@
-# empty directory for easily "mocking" the sqlite database
-*.sqlite*
