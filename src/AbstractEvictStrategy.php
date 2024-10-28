@@ -4,6 +4,8 @@ namespace Vectorial1024\LaravelCacheEvict;
 
 use Illuminate\Console\OutputStyle;
 use ramazancetinkaya\ByteFormatter;
+use Symfony\Component\Console\Input\StringInput;
+use Symfony\Component\Console\Output\NullOutput;
 
 abstract class AbstractEvictStrategy
 {
@@ -12,6 +14,10 @@ abstract class AbstractEvictStrategy
     public function __construct(
         public readonly string $storeName
     ) {
+        // default should be null output; useful when somehow calling this outside of Artisan console context
+        // does not affect actual behavior
+        // todo good opportunity to refactor with property hooks in PHP 8.4
+        $this->output = new OutputStyle(new StringInput(''), new NullOutput());
     }
 
     /**
