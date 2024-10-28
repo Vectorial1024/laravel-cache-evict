@@ -50,18 +50,29 @@ class CacheEvictStrategiesTest extends TestCase
 
     public function testFileCacheEviction()
     {
+        // generate two sets of key-value pair: one is expired, another is not
+        // to test our eviction really removes the correct expired item
+
         $testNumber = mt_rand();
-        $testKey = "k$testNumber";
-        $testValue = md5($testNumber);
+        $testKeyExpire = "k$testNumber";
+        $testValueExpire = md5($testNumber);
+        $testNumber = mt_rand();
+        $testKeyForever = "k$testNumber";
+        $testValueForever = md5($testNumber);
         $store = Cache::store("file");
 
-        // first ensure it does not already exist
-        $store->delete($testKey);
-        $this->assertFalse($store->has($testKey));
+        // first ensure both do not already exist
+        $store->delete($testKeyExpire);
+        $this->assertFalse($store->has($testKeyExpire));
+        $store->delete($testKeyForever);
+        $this->assertFalse($store->has($testKeyForever));
 
-        // then put the key-vslue in it with 1 second of expiration
-        $store->put($testKey, $testValue, 1);
-        $this->assertTrue($store->has($testKey));
+        // then put the key-value in it that quickly expires
+        $store->put($testKeyExpire, $testValueExpire, 1);
+        $this->assertTrue($store->has($testKeyExpire));
+        // and another key-value in it that does not expire
+        $store->forever($testKeyForever, $testValueForever);
+        $this->assertTrue($store->has($testKeyForever));
 
         // now, we wait for it to expire
         sleep(1);
@@ -69,7 +80,14 @@ class CacheEvictStrategiesTest extends TestCase
         $strategy = CacheEvictStrategies::getEvictionStrategy('file', CacheEvictStrategies::DRIVER_FILE);
         $strategy->execute();
 
-        // now, there should have no such item again
-        $this->assertFalse($store->has($testKey));
+        // now, only the forever item should exist
+        $this->assertFalse($store->has($testKeyExpire));
+        $this->assertTrue($store->has($testKeyForever));
+
+        // and then we clean up the thing
+        $store->delete($testKeyForever);
+        $this->assertFalse($store->has($testKeyForever));
+        // for absolute cleanliness, invoke our evictor again to clean up the empty directories
+        $strategy->execute();
     }
 }
