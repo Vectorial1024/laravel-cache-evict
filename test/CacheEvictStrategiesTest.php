@@ -2,6 +2,7 @@
 
 namespace Vectorial1024\LaravelCacheEvict\Test;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use PHPUnit\Framework\TestCase;
 use Vectorial1024\LaravelCacheEvict\CacheEvictStrategies;
@@ -15,9 +16,12 @@ class CacheEvictStrategiesTest extends TestCase
         CacheEvictStrategies::initOrReset();
 
         // set up cache configs
-        // path does not matter at the moment
-        // todo mark the directory correctly
-        Config::set('cache.stores.file.path', 'asdf');
+
+        // file cache
+        $fileCacheDir = dirname(dirname(__FILE__))."/storage/framework/cache/data";
+        Config::set('cache.stores.file.driver', 'file');
+        Config::set('cache.stores.file.path', $fileCacheDir);
+        Config::set('cache.stores.file.lock_path', $fileCacheDir);
     }
 
     public function testCorrectPresetStrategies()
@@ -32,5 +36,30 @@ class CacheEvictStrategiesTest extends TestCase
         // mock as if we have some proper config
         $strategy = CacheEvictStrategies::getEvictionStrategy('file', CacheEvictStrategies::DRIVER_FILE);
         $this->assertInstanceOf(FileEvictStrategy::class, $strategy);
+    }
+
+    public function testFileCacheEviction()
+    {
+        $testNumber = mt_rand();
+        $testKey = "k$testNumber";
+        $testValue = md5($testNumber);
+        $store = Cache::store("file");
+
+        // first ensure it does not already exist
+        $store->delete($testKey);
+        $this->assertFalse($store->has($testKey));
+
+        // then put the key-vslue in it with 1 second of expiration
+        $store->put($testKey, $testValue, 1);
+        $this->assertTrue($store->has($testKey));
+
+        // now, we wait for it to expire
+        sleep(1);
+        // to invoke our evictor
+        $strategy = CacheEvictStrategies::getEvictionStrategy('file', CacheEvictStrategies::DRIVER_FILE);
+        $strategy->execute();
+
+        // now, there should have no such item again
+        $this->assertFalse($store->has($testKey));
     }
 }
