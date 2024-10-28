@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Orchestra\Testbench\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use SQLite3;
 use Vectorial1024\LaravelCacheEvict\CacheEvictStrategies;
 use Vectorial1024\LaravelCacheEvict\Database\DatabaseEvictStrategy;
 use Vectorial1024\LaravelCacheEvict\EvictionRefusedFeatureExistsException;
@@ -13,6 +14,9 @@ use Vectorial1024\LaravelCacheEvict\File\FileEvictStrategy;
 
 class CacheEvictStrategiesTest extends TestCase
 {
+    private string $sqliteDbName; 
+    private SQLite3 $sqliteDb;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -30,9 +34,25 @@ class CacheEvictStrategiesTest extends TestCase
         Config::set('cache.stores.file.lock_path', $fileCacheDir);
 
         // sqlite database
+        // we need to set up an SQLite db file on disk, so that the test script can correctly use it
+        $this->sqliteDbName = "$projectRoot/database/database.sqlite";
+        if (file_exists($this->sqliteDbName)) {
+            unlink($this->sqliteDbName);
+        }
+        $this->sqliteDb = new SQLite3($this->sqliteDbName);
+        $this->sqliteDb->exec(<<<SQL
+            CREATE TABLE "cache" (
+                "key"	varchar NOT NULL,
+                "value"	TEXT NOT NULL,
+                "expiration"	INTEGER NOT NULL,
+            PRIMARY KEY("key"))
+        SQL);
+        $this->sqliteDb->exec(<<<SQL
+            CREATE TABLE "cache_locks" ("key" varchar not null, "owner" varchar not null, "expiration" integer not null, primary key ("key"))
+        SQL);
         Config::set('database.connections.sqlite.driver', 'sqlite');
         Config::set('database.connections.sqlite.url', '');
-        Config::set('database.connections.sqlite.database', "$projectRoot/database/database.sqlite");
+        Config::set('database.connections.sqlite.database', $this->sqliteDbName);
         Config::set('database.connections.sqlite.prefix', '');
         Config::set('database.connections.sqlite.foreign_key_constraints', true);
 
@@ -41,6 +61,13 @@ class CacheEvictStrategiesTest extends TestCase
         Config::set('cache.stores.database.table', 'cache');
         Config::set('cache.stores.database.connection', 'sqlite');
         Config::set('cache.stores.database.lock_connection', '');
+    }
+
+    public function __destruct()
+    {
+        // remove the sqlite file
+        $this->sqliteDb->close();
+        unlink($this->sqliteDbName);
     }
 
     protected function getPackageProviders($app)
