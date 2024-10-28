@@ -67,6 +67,30 @@ class CacheEvictStrategiesTest extends TestCase
         $this->assertInstanceOf(DatabaseEvictStrategy::class, $strategy);
     }
 
+    public function testNoOverridingStrategies()
+    {
+        // once set, eviction strategies may not be replaced
+        // note to users: either you set your custom strategies correctly, or (in case the default strategies have problems) open issues/PRs to the repo
+        CacheEvictStrategies::registerDriverStrategy(CacheEvictStrategies::DRIVER_FILE, DatabaseEvictStrategy::class);
+        $strategy = CacheEvictStrategies::getEvictionStrategy('file', CacheEvictStrategies::DRIVER_FILE);
+        $this->assertInstanceOf(FileEvictStrategy::class, $strategy);
+    }
+
+    public function testDefineCustomStrategies()
+    {
+        // create a new (fake) file cache store
+        Config::set('cache.stores.file2.driver', 'file2');
+        Config::set('cache.stores.file2.path', Config::get('cache.stores.file.path'));
+        Config::set('cache.stores.file2.lock_path', Config::get('cache.stores.file.lock_path'));
+        CacheEvictStrategies::registerDriverStrategy('file2', FileEvictStrategy::class);
+        $strategy = CacheEvictStrategies::getEvictionStrategy('file2', 'file2');
+        $this->assertInstanceOf(FileEvictStrategy::class, $strategy);
+        // then unset them
+        Config::set('cache.stores.file2.driver', null);
+        Config::set('cache.stores.file2.path', null);
+        Config::set('cache.stores.file2.lock_path', null);
+    }
+
     public function testFileCacheEviction()
     {
         // generate two sets of key-value pair: one is expired, another is not
