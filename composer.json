@@ -27,7 +27,7 @@
     "require-dev": {
         "ext-sqlite3": "*",
         "phpunit/phpunit": "^10.4",
-        "orchestra/testbench": "^9.5"
+        "orchestra/testbench": "^8.0|^9.0"
     },
     "scripts": {
         "test": "vendor/bin/phpunit test"
