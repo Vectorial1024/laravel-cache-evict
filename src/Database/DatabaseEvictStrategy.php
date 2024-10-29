@@ -88,6 +88,7 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
         $readableFileSize = $this->bytesToHuman($this->deletedRecordSizes);
         Partyline::info("Took {$this->elapsedTime} seconds.");
         Partyline::info("Removed {$this->deletedRecords} expired cache records. Estimated total size: $readableFileSize");
+        Partyline::info("Note: no free space reclaimed; reclaiming free space should be done manually!");
     }
 
     protected function yieldCacheTableItems(): \Generator
