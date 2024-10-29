@@ -3,6 +3,7 @@
 [![Packagist Version][packagist-version-image]][packagist-url]
 [![Packagist Downloads][packagist-downloads-image]][packagist-stats-url]
 [![PHP Dependency Version][php-version-image]][packagist-url]
+[![GitHub Actions Workflow Status][php-build-status-image]][github-actions-url]
 
 Efficiently remove expired cache data in Laravel.
 
@@ -11,16 +12,15 @@ As of writing, several Laravel cache drivers do not have automatic removal of ex
 
 - `file`
 - `database`
-- `array`
 
 ## Why is it a problem?
-If you are using some of the above cache drivers, and are caching a lot of short-lived items that are unikely to be used again, then the items that you created will not be removed by Laravel: they might expire, but they still exist in the actual data store. This means your cache is now growing larger and larger, which can be a problem (e.g., running out of disk space).
+Using any of the above cache drivers without regularly removing the expired items (aka "key eviction" in Redis) can result in storage overload, especially when you are creating a lot of temporary items with random keys.
 
 The `cache:clear` command from Laravel works, but might not be the thing you want. It does not check item expiry (it removes everything), and also clears the Laravel framework cache (e.g. `/bootstrap/cache/*`), which can be especially problematic when you are using the `file` cache driver (consider a case: cache items are created by the `www-data` user but `/bootstrap/cache/*` is owned by the `ubuntu` user).
 
-In this case, this library can help by removing the expired items in your cache and leave the Laravel framework cache untouched. See below sections for more details.
+In this case, this library can help you remove only the expired items in your cache. See below sections for more details.
 
-This library is designed to be memory efficient, so even if there are a lot of items in the cache (e.g. you are running this for the first time to deal with an oversized cache), it can still run reasonably well.
+This library is designed to be memory efficient and (for `database` caches) non-blocking, so even if there are a lot of items in the cache (e.g. you are running this for the first time to deal with an oversized cache), it can still run reasonably well.
 
 # Install
 via Composer:
@@ -34,9 +34,9 @@ The following cache drivers from `cache.php` are currently supported:
 - `database`
 - `file`
 
-Some drivers (e.g. `memcached`, `redis`) will never be supported because they have their own item eviction mechanism. For those drivers, you should use those features instead of using this library.
+Some drivers (e.g. `memcached`, `redis`) will never be supported because they have their own item eviction mechanisms; use those features instead of this library!
 
-Obviously, perhaps you are using your own cache driver which this library does not know about, but that you know how to evict the caches. In this case, you may define your own cache eviction strategies and register them to this library (see Advanced Usage section).
+Custom eviction strategies can be defined for other cache drivers that does not have their own eviction mechanisms (see FAQ section).
 
 # Usage
 
@@ -90,16 +90,19 @@ This library checks the cache *name* (not *driver*!) inside `cache.php` to deter
 php artisan cache:evict local_store
 ```
 
-... then, you will only evict the `local_store` cache. The library will then notice `local_store` is using the `file` driver, and will evict items using the file eviction strategy.
+... then, you will only evict the `local_store` cache. The `another_store` cache is unaffected by this command (assuming both are using separate directories, of course).
 
-The `another_store` cache is unaffected, assuming you configured both to store the cache data at different directories.
+# Testing
+Using `orchestra/testbench` (customized PHPUnit) via Composer:
 
-# Advanced usage
+```sh
+composer run-script test
+```
 
-## Defining your own eviction strategies
-This allows you to define cache eviction strategies that this library does not provide out-of-the-box, and use them as if you are still using this library (e.g. you keep the cli `php artisan cache:evict` command)
+# Frequently-asked questions (FAQ)
 
-Simply create your Laravel service provider, and do the following:
+## How to define custom eviction strategies?
+You can do so inside your Laravel service provider. Simply do the following:
 
 ```php
 public function boot()
@@ -113,10 +116,15 @@ public function boot()
 }
 ```
 
+## Will this library help me reclaim `database` disk spaces?
+No, but if you are using this library regularly to evict expired items, then you do not need to worry about reclaiming free space. For more details, talk with a system admin/database specialist.
+
 [packagist-url]: https://packagist.org/packages/vectorial1024/laravel-cache-evict
 [packagist-stats-url]: https://packagist.org/packages/vectorial1024/laravel-cache-evict/stats
+[github-actions-url]: https://github.com/Vectorial1024/laravel-cache-evict/actions/workflows/php.yml
 
 [packagist-license-image]: https://img.shields.io/packagist/l/vectorial1024/laravel-cache-evict?style=plastic
 [packagist-version-image]: https://img.shields.io/packagist/v/vectorial1024/laravel-cache-evict?style=plastic
 [packagist-downloads-image]: https://img.shields.io/packagist/dm/vectorial1024/laravel-cache-evict?style=plastic
 [php-version-image]: https://img.shields.io/packagist/dependency-v/vectorial1024/laravel-cache-evict/php?style=plastic&label=PHP
+[php-build-status-image]: https://img.shields.io/github/actions/workflow/status/Vectorial1024/laravel-cache-evict/php.yml?style=plastic
