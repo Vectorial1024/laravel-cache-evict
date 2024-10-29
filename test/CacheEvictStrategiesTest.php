@@ -38,6 +38,7 @@ class CacheEvictStrategiesTest extends TestCase
         // we need to set up an SQLite db file on disk, so that the test script can correctly use it
         $this->sqliteDbName = "$projectRoot/database/database.sqlite";
         $this->sqliteDb = new SQLite3($this->sqliteDbName);
+        $this->sqliteDb->exec('DROP TABLE IF EXISTS "cache"');
         $this->sqliteDb->exec(<<<SQL
             CREATE TABLE "cache" (
                 "key"	varchar NOT NULL,
@@ -45,6 +46,7 @@ class CacheEvictStrategiesTest extends TestCase
                 "expiration"	INTEGER NOT NULL,
             PRIMARY KEY("key"))
         SQL);
+        $this->sqliteDb->exec('DROP TABLE IF EXISTS "cache_locks"');
         $this->sqliteDb->exec(<<<SQL
             CREATE TABLE "cache_locks" ("key" varchar not null, "owner" varchar not null, "expiration" integer not null, primary key ("key"))
         SQL);
