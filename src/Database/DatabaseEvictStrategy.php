@@ -62,16 +62,25 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
         foreach ($this->yieldCacheTableItems() as $cacheItem) {
             // read record details
             $currentUserKey = $cacheItem->key;
+            $currentExpiration = $cacheItem->expiration;
+            $currentActualKey = "{$cachePrefix}{$currentUserKey}";
             // currently timestamps are 32-bit, so are 4 bytes
             $estimatedBytes = $cacheItem->key_bytes + $cacheItem->value_bytes + 4;
             $progressBar->advance();
 
-            // then, use the cache method to attempt to load it
-            // this respects potential db cache locks that the cache store might have set
-            // the cache function will help us forget the item, so if the returned value is null, then we are sure the thing is expired
-            $cachedValue = $this->cacheStore->get($currentUserKey);
-            if ($cachedValue === null) {
-                // item likely expired
+            if (time() < $currentExpiration) {
+                // not expired yet
+                continue;
+            }
+            // item expired; try to issue a delete command to it
+            // this respects any potential new value written to the db while we were checking other things
+            $rowsAffected = $this->dbConn
+                ->table($this->dbTable)
+                ->where('key', '=', $currentActualKey)
+                ->where('expiration', '=', $currentExpiration)
+                ->delete();
+            if ($rowsAffected) {
+                // item really expired with no new values
                 $this->deletedRecords += 1;
                 $this->deletedRecordSizes += $estimatedBytes;
             }
@@ -104,7 +113,7 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
             // Partyline::info("Checking DB key $actualKey");
             $record = $this->dbConn
                 ->table($this->dbTable)
-                ->select(['key', DB::raw('LENGTH(key) AS key_bytes'), DB::raw('LENGTH(value) AS value_bytes')])
+                ->select(['key', 'expiration', DB::raw('LENGTH(key) AS key_bytes'), DB::raw('LENGTH(value) AS value_bytes')])
                 ->where('key', '>', $actualKey)
                 ->where('key', 'LIKE', "$cachePrefix%")
                 ->limit(1)
