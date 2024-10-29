@@ -12,9 +12,9 @@ permissions:
 jobs:
   build:
 
-    # ubuntu-24.04 has PHP 8.3
+    # ubuntu-latest has PHP 8.1
     # see https://github.com/marketplace/actions/setup-php-action
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
