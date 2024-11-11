@@ -14,7 +14,7 @@ As of writing, several Laravel cache drivers do not have automatic removal of ex
 - `file`
 - `database`
 
-## Why is it a problem?
+### Why is it a problem?
 Using any of the above cache drivers without regularly removing the expired items (aka "key eviction" in Redis) can result in storage overload, especially when you are creating a lot of temporary items with random keys.
 
 The `cache:clear` command from Laravel works, but might not be the thing you want. It does not check item expiry (it removes everything), and also clears the Laravel framework cache (e.g. `/bootstrap/cache/*`), which can be especially problematic when you are using the `file` cache driver (consider a case: cache items are created by the `www-data` user but `/bootstrap/cache/*` is owned by the `ubuntu` user).
@@ -23,14 +23,14 @@ In this case, this library can help you remove only the expired items in your ca
 
 This library is designed to be memory efficient and (for `database` caches) non-blocking, so even if there are a lot of items in the cache (e.g. you are running this for the first time to deal with an oversized cache), it can still run reasonably well.
 
-# Install
+## Install
 via Composer:
 
 ```sh
 composer require vectorial1024/laravel-cache-evict
 ```
 
-## Supported cache types
+### Supported cache types
 The following cache drivers from `cache.php` are currently supported:
 - `database`
 - `file`
@@ -39,7 +39,7 @@ Some drivers (e.g. `memcached`, `redis`) will never be supported because they ha
 
 Custom eviction strategies can be defined for other cache drivers that does not have their own eviction mechanisms (see FAQ section).
 
-# Usage
+## Usage
 
 You may run this in the command line:
 
@@ -66,7 +66,7 @@ Schedule::command(CacheEvictCommand::class)->daily()->runInBackground();
 Schedule::command(CacheEvictCommand::class, ['target' => 'file'])->daily()->runInBackground();
 ```
 
-## The relationship with `cache.php`
+### The relationship with `cache.php`
 This library checks the cache *name* (not *driver*!) inside `cache.php` to determine which cache to clear. This means, if you have the following `cache.php` ...
 
 ```php
@@ -93,16 +93,16 @@ php artisan cache:evict local_store
 
 ... then, you will only evict the `local_store` cache. The `another_store` cache is unaffected by this command (assuming both are using separate directories, of course).
 
-# Testing
+## Testing
 Using `orchestra/testbench` (customized PHPUnit) via Composer:
 
 ```sh
 composer run-script test
 ```
 
-# Frequently-asked questions (FAQ)
+## Frequently-asked questions (FAQ)
 
-## How to define custom eviction strategies?
+### How to define custom eviction strategies?
 You can do so inside your Laravel service provider. Simply do the following:
 
 ```php
@@ -117,7 +117,7 @@ public function boot()
 }
 ```
 
-## Will this library help me reclaim `database` disk spaces?
+### Will this library help me reclaim `database` disk spaces?
 No, but if you are using this library regularly to evict expired items, then you do not need to worry about reclaiming free space. For more details, talk with a system admin/database specialist.
 
 [packagist-url]: https://packagist.org/packages/vectorial1024/laravel-cache-evict
