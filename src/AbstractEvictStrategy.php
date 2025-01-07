@@ -3,7 +3,6 @@
 namespace Vectorial1024\LaravelCacheEvict;
 
 use Illuminate\Console\OutputStyle;
-use ramazancetinkaya\ByteFormatter;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\NullOutput;
 
