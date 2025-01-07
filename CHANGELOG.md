@@ -8,7 +8,7 @@ Special note: this update is made in response to the external rugpull as discove
 - No longer depends on `ramazancetinkaya/byte-formatter` as culprit of rugpull
   - A StackOverflow-copied solution is being used for now
   - A proper solution will be made later
-- Added a changelog at `ChANGELOG.md`
+- Added a changelog at `CHANGELOG.md`
 
 ## 1.0.2 (2024-10-29)
 Hotfix: avoid `database` eviction race condition (38d70027b1778685a3c5ddffb4e10a9892bf4896); improve test case stability (2f7fecf581d5598231671ba5511e219aa94122b3)
