@@ -3,7 +3,6 @@
 namespace Vectorial1024\LaravelCacheEvict;
 
 use Illuminate\Console\OutputStyle;
-use ramazancetinkaya\ByteFormatter;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\NullOutput;
 
@@ -42,8 +41,10 @@ abstract class AbstractEvictStrategy
      */
     protected function bytesToHuman(int $bytes): string
     {
-        // in case the library broke, we can refer to this link: https://stackoverflow.com/questions/15188033/human-readable-file-size
-        $formatter = new ByteFormatter();
-        return $formatter->format($bytes);
+        // the guy did a rugpull; the link turned out to be very handy.
+        // see https://stackoverflow.com/questions/15188033/human-readable-file-size
+        $units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+        for ($i = 0; $bytes > 1024; $i++) $bytes /= 1024;
+        return round($bytes, 2) . ' ' . $units[$i];
     }
 }

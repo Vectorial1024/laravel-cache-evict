@@ -39,6 +39,9 @@ Some drivers (e.g. `memcached`, `redis`) will never be supported because they ha
 
 Custom eviction strategies can be defined for other cache drivers that does not have their own eviction mechanisms (see FAQ section).
 
+### Change log
+Please see `CHANGELOG.md`.
+
 ## Usage
 
 You may run this in the command line:
@@ -94,7 +97,7 @@ php artisan cache:evict local_store
 ... then, you will only evict the `local_store` cache. The `another_store` cache is unaffected by this command (assuming both are using separate directories, of course).
 
 ## Testing
-Using `orchestra/testbench` (customized PHPUnit) via Composer:
+PHPUnit (using `orchestra/testbench`) via Composer:
 
 ```sh
 composer run-script test
