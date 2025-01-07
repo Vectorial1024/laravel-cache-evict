@@ -39,6 +39,9 @@ Some drivers (e.g. `memcached`, `redis`) will never be supported because they ha
 
 Custom eviction strategies can be defined for other cache drivers that does not have their own eviction mechanisms (see FAQ section).
 
+### Change log
+Please see `CHANGELOG.md`.
+
 ## Usage
 
 You may run this in the command line:
