@@ -44,6 +44,6 @@ abstract class AbstractEvictStrategy
     {
         // in case the library broke, we can refer to this link: https://stackoverflow.com/questions/15188033/human-readable-file-size
         $formatter = new ByteFormatter();
-        return $formatter->format($bytes);
+        return $formatter->formatBytes($bytes);
     }
 }
