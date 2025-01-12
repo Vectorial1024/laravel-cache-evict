@@ -3,7 +3,11 @@ Note: you may refer to `README.md` for description of features.
 
 ## Dev (WIP)
 
-## 1.0.3 (2025-01-17)
+## 2.0.0 (2025-01-12)
+- Adopted Laravel's `Number::fileSize()` to show the estimated evicted storage size stats
+  - Therefore, further requires `ext-intl`
+
+## 1.0.3 (2025-01-07)
 Special note: this update is made in response to the external rugpull as discovered in #4. All previous versions are "tainted" and will not be supported, effective immediately. Update your installed version now!!!
 - No longer depends on `ramazancetinkaya/byte-formatter` as culprit of rugpull
   - A StackOverflow-copied solution is being used for now
@@ -26,4 +30,3 @@ This is a utility library for Laravel that can efficiently remove many expired c
 - Supports the `file` and `database` cache driver
 - Supports self-defined cache eviction strategies
 - Uses PHP generators to avoid using too much memory while scanning for expired items
-
