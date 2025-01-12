@@ -6,6 +6,7 @@ Note: you may refer to `README.md` for description of features.
 ## 2.0.0 (2025-01-12)
 - Adopted Laravel's `Number::fileSize()` to show the estimated evicted storage size stats
   - Therefore, further requires `ext-intl`
+  - Note: no code change required!
 
 ## 1.0.3 (2025-01-07)
 Special note: this update is made in response to the external rugpull as discovered in #4. All previous versions are "tainted" and will not be supported, effective immediately. Update your installed version now!!!
