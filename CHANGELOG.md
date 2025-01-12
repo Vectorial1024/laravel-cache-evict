@@ -15,16 +15,16 @@ Special note: this update is made in response to the external rugpull as discove
   - A proper solution will be made later
 - Added a changelog at `CHANGELOG.md`
 
-## 1.0.2 (2024-10-29)
+## 1.0.2 (2024-10-29) (9fdf85141c0e7277947b6ceeabbb893775962ace)
 Hotfix: avoid `database` eviction race condition (38d70027b1778685a3c5ddffb4e10a9892bf4896); improve test case stability (2f7fecf581d5598231671ba5511e219aa94122b3)
 
-## 1.0.1 (2024-10-29)
+## 1.0.1 (2024-10-29) (5fa7e19f4841a3aadb8950e2e637bff081dc665c)
 The v1.0.1 release of the library.
 - Added the earlier-promised auto tests (#2)
 - Reorganized the README
 - Removed `package.json` (#2) to fix possible installation failures
 
-## 1.0.0 (2024-10-27)
+## 1.0.0 (2024-10-27) (3f9318bf9adbcff915ab840a17521b15d507ad4e)
 Initial release.
 
 This is a utility library for Laravel that can efficiently remove many expired cache items in Laravel to prevent storage overload.
