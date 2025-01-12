@@ -51,5 +51,8 @@
                 "Vectorial1024\\LaravelCacheEvict\\CacheEvictServiceProvider"
             ]
         }
+    },
+    "config": {
+        "sort-packages": true
     }
 }
