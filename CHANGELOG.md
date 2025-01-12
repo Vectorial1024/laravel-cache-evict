@@ -4,7 +4,7 @@ Note: you may refer to `README.md` for description of features.
 ## Dev (WIP)
 
 ## 2.0.0 (2025-01-12)
-- Adopted Laravel's `Number::fileSize()` to show the estimated file size cleaned stats
+- Adopted Laravel's `Number::fileSize()` to show the estimated storage size cleaned stats
   - Therefore, further requires `ext-intl`
 
 ## 1.0.3 (2025-01-07)
