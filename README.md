@@ -30,6 +30,9 @@ via Composer:
 composer require vectorial1024/laravel-cache-evict
 ```
 
+Suggestions:
+- (Optional) `ext-intl` allows using Laravel's own `Number::fileSize()` for size reporting
+
 ### Supported cache types
 The following cache drivers from `cache.php` are currently supported:
 - `database`

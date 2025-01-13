@@ -33,7 +33,6 @@
     ],
     "require": {
         "php": "^8.1",
-        "ext-intl": "*",
         "illuminate/support": "^10.0|^11.0",
         "wilderborn/partyline": "^1.0"
     },
@@ -41,6 +40,9 @@
         "ext-sqlite3": "*",
         "phpunit/phpunit": "^10.4",
         "orchestra/testbench": "^8.0|^9.0"
+    },
+    "suggest": {
+        "ext-intl": "Enables using Laravel's `Number::fileSize()` for size reporting"
     },
     "scripts": {
         "test": "vendor/bin/phpunit test"

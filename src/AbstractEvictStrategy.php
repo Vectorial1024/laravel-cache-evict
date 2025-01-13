@@ -43,6 +43,14 @@ abstract class AbstractEvictStrategy
     protected function bytesToHuman(int $bytes): string
     {
         // it turns out Laravel already has a helper for this
-        return Number::fileSize($bytes, 2, 2);
+        // but it requires the intl extension
+        // prefer the Laravel solution; if they don't have it, then we can still use the fallback hand-crafted solution
+        if (extension_loaded('intl')) {
+            return Number::fileSize($bytes, 2, 2);
+        }
+        // see https://stackoverflow.com/questions/15188033/human-readable-file-size
+        $units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+        for ($i = 0; $bytes > 1024; $i++) $bytes /= 1024;
+        return round($bytes, 2) . ' ' . $units[$i];
     }
 }

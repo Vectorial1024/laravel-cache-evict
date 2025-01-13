@@ -3,6 +3,10 @@ Note: you may refer to `README.md` for description of features.
 
 ## Dev (WIP)
 
+## 2.0.1 (2025-01-13)
+- Added fallback of Laravel's `Number::fileSize()` if `ext-intl` is not available
+  - `ext-intl` is now suggested instead of required
+
 ## 2.0.0 (2025-01-12)
 - Adopted Laravel's `Number::fileSize()` to show the estimated evicted storage size stats
   - Therefore, further requires `ext-intl`
