@@ -105,14 +105,12 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
     protected function yieldCacheTableItems(): \Generator
     {
         // there might be a prefix for the cache store!
-        // not sure how to properly type-cast to DatabaseStore, but this should exist.
         $cachePrefix = $this->cacheStore->getPrefix();
         $currentUserKey = "";
         // loop until no more items
         while (true) {
             // find the next key
             $actualKey = "{$cachePrefix}{$currentUserKey}";
-            // Partyline::info("Checking DB key $actualKey");
             $record = $this->dbConn
                 ->table($this->dbTable)
                 ->select(['key', 'expiration', DB::raw('LENGTH(key) AS key_bytes'), DB::raw('LENGTH(value) AS value_bytes')])
@@ -120,7 +118,6 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
                 ->where('key', 'LIKE', "$cachePrefix%")
                 ->limit(1)
                 ->first();
-            // Partyline::info(var_dump($record));
             if (!$record) {
                 // nothing more to get
                 break;
