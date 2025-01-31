@@ -7,6 +7,7 @@ use ErrorException;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Console\Helper\ProgressBar;
+use UnexpectedValueException;
 use Vectorial1024\LaravelCacheEvict\AbstractEvictStrategy;
 use Wilderborn\Partyline\Facade as Partyline;
 
@@ -84,13 +85,23 @@ class FileEvictStrategy extends AbstractEvictStrategy
         Partyline::info("Removed {$this->deletedDirs} empty directories.");
     }
 
-    protected function handleCacheFilesInDirectory(string $dirName)
+    protected function handleCacheFilesInDirectory(string $dirName): void
     {
         $localPath = $this->filesystem->path($dirName);
 
         // remove files inside directory
+        try {
+            $dirIter = new DirectoryIterator($localPath);
+        } catch (UnexpectedValueException $x) {
+            // this indicates the directory is gone
+            // this might be caused by race conditions
+            // this should be rare (later execution catching up to earlier run), but better be safe than sorry
+            Partyline::warn("Cache directory {$dirName} was deleted earlier than expected; skipping.");
+            // then we have nothing to do here 
+            return;
+        }
         /** @var \SplFileInfo $fileInfo */
-        foreach (new DirectoryIterator($localPath) as $fileInfo) {
+        foreach ($dirIter as $fileInfo) {
             if ($fileInfo->isDot()) {
                 continue;
             }
