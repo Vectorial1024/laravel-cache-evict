@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Vectorial1024\LaravelCacheEvict\File;
 
 use DirectoryIterator;
