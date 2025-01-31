@@ -2,6 +2,8 @@
 Note: you may refer to `README.md` for description of features.
 
 ## Dev (WIP)
+
+## 2.0.2 (2025-01-31)
 - Fixed file cache evictor sometimes throwing `UnexpectedValueException` due to race conditions
   - This could happen when multiple cleaners are running at the same time
 - Minor general codebase cleanup
