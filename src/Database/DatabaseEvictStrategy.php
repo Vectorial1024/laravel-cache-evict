@@ -67,7 +67,7 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
             $currentExpiration = $cacheItem->expiration;
             $currentActualKey = "{$cachePrefix}{$currentUserKey}";
             // currently timestamps are 32-bit, so are 4 bytes
-            $estimatedBytes = $cacheItem->key_bytes + $cacheItem->value_bytes + 4;
+            $estimatedBytes = (int) ($cacheItem->key_bytes + $cacheItem->value_bytes + 4);
             $progressBar->advance();
 
             if (time() < $currentExpiration) {
