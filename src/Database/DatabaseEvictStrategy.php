@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Vectorial1024\LaravelCacheEvict\Database;
 
 use Illuminate\Contracts\Cache\Repository;
