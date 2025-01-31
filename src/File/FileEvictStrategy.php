@@ -54,11 +54,21 @@ class FileEvictStrategy extends AbstractEvictStrategy
         $progressBar = $this->output->createProgressBar();
         $progressBar->setMaxSteps(count($allDirs));
 
-        foreach ($allDirs as $dir) {
-            // we will have some verbose printing for now to test this feature.
+        // since allDir is an array with contents like "0", "0/0", "0/1", ... "1", ...
+        // and we are trying to remove items during iteration
+        // we should iterate it in reverse as per literation best practices
+        // the reversal also cleanly avoids possible race conditions by aligning iteration direction across all cleaners
+        foreach (array_reverse($allDirs) as $dir) {
+            // handle cache files, then delete the directory in the same place
             $this->handleCacheFilesInDirectory($dir);
             $progressBar->advance();
-            // sleep(1);
+            try {
+                $localPath = $this->filesystem->path($dir);
+                rmdir($localPath);
+                $this->deletedDirs++;
+            } catch (ErrorException) {
+                // it's OK if we cannot remove directories; this usually means the directory is not empty.
+            }
         }
 
         $progressBar->finish();
