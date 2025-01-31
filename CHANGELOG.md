@@ -2,6 +2,9 @@
 Note: you may refer to `README.md` for description of features.
 
 ## Dev (WIP)
+- Fixed file cache evictor sometimes throwing `UnexpectedValueException` due to race conditions
+  - This could happen when multiple cleaners are running at the same time
+- Minor general codebase cleanup
 
 ## 2.0.1 (2025-01-13)
 - Added fallback of Laravel's `Number::fileSize()` if `ext-intl` is not available

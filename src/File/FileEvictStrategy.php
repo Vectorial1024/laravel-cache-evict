@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Vectorial1024\LaravelCacheEvict\File;
 
 use DirectoryIterator;
@@ -7,6 +9,7 @@ use ErrorException;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Console\Helper\ProgressBar;
+use UnexpectedValueException;
 use Vectorial1024\LaravelCacheEvict\AbstractEvictStrategy;
 use Wilderborn\Partyline\Facade as Partyline;
 
@@ -54,30 +57,25 @@ class FileEvictStrategy extends AbstractEvictStrategy
         $progressBar = $this->output->createProgressBar();
         $progressBar->setMaxSteps(count($allDirs));
 
-        foreach ($allDirs as $dir) {
-            // we will have some verbose printing for now to test this feature.
+        // since allDir is an array with contents like "0", "0/0", "0/1", ... "1", ...
+        // and we are trying to remove items during iteration
+        // we should iterate it in reverse as per literation best practices
+        // the reversal also cleanly avoids possible race conditions by aligning iteration direction across all cleaners
+        foreach (array_reverse($allDirs) as $dir) {
+            // handle cache files, then delete the directory in the same place
             $this->handleCacheFilesInDirectory($dir);
             $progressBar->advance();
-            // sleep(1);
+            // it's OK if we cannot remove directories; this usually means the directory is not empty.
+            $localPath = $this->filesystem->path($dir);
+            @rmdir($localPath);
+            $this->deletedDirs++;
         }
 
         $progressBar->finish();
         unset($progressBar);
         // progress bar next empty line
         Partyline::info("");
-        Partyline::info("Expired cache files evicted; checking empty directories...");
-        // since allDir is an array with contents like "0", "0/0", "0/1", ... "1", ...
-        // we can reverse it to effectively remove directories
-        // in theory removing directories is very fast, so no progress bars here
-        foreach (array_reverse($allDirs) as $dir) {
-            try {
-                $localPath = $this->filesystem->path($dir);
-                rmdir($localPath);
-                $this->deletedDirs++;
-            } catch (ErrorException) {
-                // it's OK if we cannot remove directories; this usually means the directory is not empty.
-            }
-        }
+        Partyline::info("Expired cache files evicted.");
 
         // all is done; print some stats
         $endUnix = microtime(true);
@@ -89,14 +87,23 @@ class FileEvictStrategy extends AbstractEvictStrategy
         Partyline::info("Removed {$this->deletedDirs} empty directories.");
     }
 
-    protected function handleCacheFilesInDirectory(string $dirName)
+    protected function handleCacheFilesInDirectory(string $dirName): void
     {
         $localPath = $this->filesystem->path($dirName);
-        // Partyline::info("Checking $localPath...");
 
         // remove files inside directory
+        try {
+            $dirIter = new DirectoryIterator($localPath);
+        } catch (UnexpectedValueException $x) {
+            // this indicates the directory is gone
+            // this might be caused by race conditions
+            // this should be rare (later execution catching up to earlier run), but better be safe than sorry
+            Partyline::warn("Cache directory {$dirName} was deleted earlier than expected; skipping.");
+            // then we have nothing to do here 
+            return;
+        }
         /** @var \SplFileInfo $fileInfo */
-        foreach (new DirectoryIterator($localPath) as $fileInfo) {
+        foreach ($dirIter as $fileInfo) {
             if ($fileInfo->isDot()) {
                 continue;
             }
@@ -106,7 +113,6 @@ class FileEvictStrategy extends AbstractEvictStrategy
 
             $realPath = $fileInfo->getRealPath();
             $shortFileName = $dirName . DIRECTORY_SEPARATOR . $fileInfo->getFilename();
-            // Partyline::info("Checking file $realPath...");
             try {
                 // read expiry
                 // the first 10 characters form the expiry timestamp
@@ -115,10 +121,8 @@ class FileEvictStrategy extends AbstractEvictStrategy
                 $expiry = (int) file_get_contents($realPath, length: 10);
                 if (time() < $expiry) {
                     // not expired yet
-                    // Partyline::info("Not expired");
                     continue;
                 }
-                // Partyline::info("Expired");
             } catch (ErrorException) {
                 // it's OK if we cannot read the file, this can happen when e.g. the cache file is deleted by other Laravel code
                 Partyline::warn("Could not read details of cache file $shortFileName; skipping.");

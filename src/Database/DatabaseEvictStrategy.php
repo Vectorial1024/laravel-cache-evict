@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Vectorial1024\LaravelCacheEvict\Database;
 
-use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Cache\DatabaseStore;
 use Illuminate\Database\Connection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +18,7 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
 
     protected string $dbTable;
 
-    protected Repository $cacheStore;
+    protected DatabaseStore $cacheStore;
 
     protected int $deletedRecords = 0;
     protected int $deletedRecordSizes = 0;
@@ -31,7 +33,7 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
         $storeConn = config("cache.stores.{$storeName}.connection");
         $this->dbConn = DB::connection($storeConn);
         $this->dbTable = config("cache.stores.{$storeName}.table");
-        $this->cacheStore = Cache::store($this->storeName);
+        $this->cacheStore = Cache::store($this->storeName)->getStore();
     }
 
     public function execute(): void
@@ -65,7 +67,7 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
             $currentExpiration = $cacheItem->expiration;
             $currentActualKey = "{$cachePrefix}{$currentUserKey}";
             // currently timestamps are 32-bit, so are 4 bytes
-            $estimatedBytes = $cacheItem->key_bytes + $cacheItem->value_bytes + 4;
+            $estimatedBytes = (int) ($cacheItem->key_bytes + $cacheItem->value_bytes + 4);
             $progressBar->advance();
 
             if (time() < $currentExpiration) {
@@ -103,14 +105,12 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
     protected function yieldCacheTableItems(): \Generator
     {
         // there might be a prefix for the cache store!
-        // not sure how to properly type-cast to DatabaseStore, but this should exist.
         $cachePrefix = $this->cacheStore->getPrefix();
         $currentUserKey = "";
         // loop until no more items
         while (true) {
             // find the next key
             $actualKey = "{$cachePrefix}{$currentUserKey}";
-            // Partyline::info("Checking DB key $actualKey");
             $record = $this->dbConn
                 ->table($this->dbTable)
                 ->select(['key', 'expiration', DB::raw('LENGTH(key) AS key_bytes'), DB::raw('LENGTH(value) AS value_bytes')])
@@ -118,7 +118,6 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
                 ->where('key', 'LIKE', "$cachePrefix%")
                 ->limit(1)
                 ->first();
-            // Partyline::info(var_dump($record));
             if (!$record) {
                 // nothing more to get
                 break;
