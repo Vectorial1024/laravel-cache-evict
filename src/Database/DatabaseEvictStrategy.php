@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vectorial1024\LaravelCacheEvict\Database;
 
-use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Cache\DatabaseStore;
 use Illuminate\Database\Connection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +18,7 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
 
     protected string $dbTable;
 
-    protected Repository $cacheStore;
+    protected DatabaseStore $cacheStore;
 
     protected int $deletedRecords = 0;
     protected int $deletedRecordSizes = 0;
@@ -33,7 +33,7 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
         $storeConn = config("cache.stores.{$storeName}.connection");
         $this->dbConn = DB::connection($storeConn);
         $this->dbTable = config("cache.stores.{$storeName}.table");
-        $this->cacheStore = Cache::store($this->storeName);
+        $this->cacheStore = Cache::store($this->storeName)->getStore();
     }
 
     public function execute(): void
