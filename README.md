@@ -5,6 +5,7 @@
 [![PHP Dependency Version][php-version-image]][packagist-url]
 [![GitHub Actions Workflow Status][php-build-status-image]][github-actions-url]
 [![GitHub Repo Stars][github-stars-image]][github-repo-url]
+[![GitHub Sponsors][github-sponsors-image]][github-sponsors-url]
 
 Efficiently remove expired cache data in Laravel.
 
@@ -130,6 +131,7 @@ No, but if you are using this library regularly to evict expired items, then you
 [packagist-stats-url]: https://packagist.org/packages/vectorial1024/laravel-cache-evict/stats
 [github-repo-url]: https://github.com/Vectorial1024/laravel-cache-evict
 [github-actions-url]: https://github.com/Vectorial1024/laravel-cache-evict/actions/workflows/php.yml
+[github-sponsors-url]: https://github.com/sponsors/Vectorial1024
 
 [packagist-license-image]: https://img.shields.io/packagist/l/vectorial1024/laravel-cache-evict?style=plastic
 [packagist-version-image]: https://img.shields.io/packagist/v/vectorial1024/laravel-cache-evict?style=plastic
@@ -137,3 +139,4 @@ No, but if you are using this library regularly to evict expired items, then you
 [php-version-image]: https://img.shields.io/packagist/dependency-v/vectorial1024/laravel-cache-evict/php?style=plastic&label=PHP
 [php-build-status-image]: https://img.shields.io/github/actions/workflow/status/Vectorial1024/laravel-cache-evict/php.yml?style=plastic
 [github-stars-image]: https://img.shields.io/github/stars/vectorial1024/laravel-cache-evict
+[github-sponsors-image]: https://img.shields.io/github/sponsors/Vectorial1024?style=plastic
