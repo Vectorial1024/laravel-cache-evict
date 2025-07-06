@@ -20,9 +20,9 @@ Using any of the above cache drivers without regularly removing the expired item
 
 The `cache:clear` command from Laravel works, but might not be the thing you want. It does not check item expiry (it removes everything), and also clears the Laravel framework cache (e.g. `/bootstrap/cache/*`), which can be especially problematic when you are using the `file` cache driver (consider a case: cache items are created by the `www-data` user but `/bootstrap/cache/*` is owned by the `ubuntu` user).
 
-In this case, this library can help you remove only the expired items in your cache. See below sections for more details.
+In this case, this tool can help you remove only the expired items in your cache. See below sections for more details.
 
-This library is designed to be memory efficient and (for `database` caches) non-blocking, so even if there are a lot of items in the cache (e.g. you are running this for the first time to deal with an oversized cache), it can still run reasonably well.
+This tool is designed to be memory efficient and (for `database` caches) non-blocking, so even if there are a lot of items in the cache (e.g. you are running this for the first time to deal with an oversized cache), it can still run reasonably well.
 
 ## Install
 via Composer:
@@ -39,7 +39,7 @@ The following cache drivers from `cache.php` are currently supported:
 - `database`
 - `file`
 
-Some drivers (e.g. `memcached`, `redis`) will never be supported because they have their own item eviction mechanisms; use those features instead of this library!
+Some drivers (e.g. `memcached`, `redis`) will never be supported because they have their own item eviction mechanisms; use those features instead of this tool!
 
 Custom eviction strategies can be defined for other cache drivers that does not have their own eviction mechanisms (see FAQ section).
 
@@ -74,7 +74,7 @@ Schedule::command(CacheEvictCommand::class, ['target' => 'file'])->daily()->runI
 ```
 
 ### The relationship with `cache.php`
-This library checks the cache *name* (not *driver*!) inside `cache.php` to determine which cache to clear. This means, if you have the following `cache.php` ...
+This tool checks the cache *name* (not *driver*!) inside `cache.php` to determine which cache to clear. This means, if you have the following `cache.php` ...
 
 ```php
 [
@@ -124,8 +124,12 @@ public function boot()
 }
 ```
 
-### Will this library help me reclaim `database` disk spaces?
-No, but if you are using this library regularly to evict expired items, then you do not need to worry about reclaiming free space. For more details, talk with a system admin/database specialist.
+### Will this tool help me reclaim `database` disk spaces?
+No, but if you are using this tool regularly to evict expired items, then you do not need to worry about reclaiming free space. For more details, talk with a system admin/database specialist.
+
+### Can I run this tool during high-traffic hours?
+Sure! This tool is designed with high-traffic situations in mind. It is memory-efficient and (for `database` caches) non-blocking.
+Feel free to run this tool e.g. hourly.
 
 [packagist-url]: https://packagist.org/packages/vectorial1024/laravel-cache-evict
 [packagist-stats-url]: https://packagist.org/packages/vectorial1024/laravel-cache-evict/stats

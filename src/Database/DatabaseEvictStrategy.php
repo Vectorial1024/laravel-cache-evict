@@ -25,6 +25,8 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
 
     protected float $elapsedTime = 0;
 
+    protected string $cachePrefix = "";
+
     public function __construct(string $storeName)
     {
         parent::__construct($storeName);    
@@ -34,6 +36,10 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
         $this->dbConn = DB::connection($storeConn);
         $this->dbTable = config("cache.stores.{$storeName}.table");
         $this->cacheStore = Cache::store($this->storeName)->getStore();
+
+        // write down the cache prefix; cache might have that
+        // currently Laravel's cache prefix is only applied very easily by "{prefix}{key}"
+        $this->cachePrefix = $this->cacheStore->getPrefix();
     }
 
     public function execute(): void
@@ -41,7 +47,6 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
         // read the cache config and set up targets
         $this->deletedRecords = 0;
         $this->deletedRecordSizes = 0;
-        $this->deletedDirs = 0;
         $this->elapsedTime = 0;
 
         // we use a memory-efficient way of deleting items.
@@ -50,10 +55,9 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
         // the key field is indexed, so it is not too bad
         Partyline::info("Finding relevant cache records...");
         // cache might have prefix!
-        $cachePrefix = $this->cacheStore->getPrefix();
         $itemCount = $this->dbConn
             ->table($this->dbTable)
-            ->where('key', 'LIKE', "$cachePrefix%")
+            ->where('key', 'LIKE', "{$this->cachePrefix}%")
             ->count();
         Partyline::info("Found $itemCount records; processing...");
         
@@ -63,9 +67,8 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
         $progressBar->setMaxSteps($itemCount);
         foreach ($this->yieldCacheTableItems() as $cacheItem) {
             // read record details
-            $currentUserKey = $cacheItem->key;
+            $currentActualKey = $cacheItem->key;
             $currentExpiration = $cacheItem->expiration;
-            $currentActualKey = "{$cachePrefix}{$currentUserKey}";
             // currently timestamps are 32-bit, so are 4 bytes
             $estimatedBytes = (int) ($cacheItem->key_bytes + $cacheItem->value_bytes + 4);
             $progressBar->advance();
@@ -82,7 +85,7 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
                 ->where('expiration', '=', $currentExpiration)
                 ->delete();
             if ($rowsAffected) {
-                // item really expired with no new values
+                // item really expired with no new updates
                 $this->deletedRecords += 1;
                 $this->deletedRecordSizes += $estimatedBytes;
             }
@@ -102,19 +105,25 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
         Partyline::info("Note: no free space reclaimed; reclaiming free space should be done manually!");
     }
 
+    /**
+     * Yields the next item from the cache table that belongs to this cache.
+     * 
+     * This method will return the actual key (with the cache prefix if exists) of the entry.
+     * @return \Generator<mixed, object, mixed, void>
+     */
     protected function yieldCacheTableItems(): \Generator
     {
         // there might be a prefix for the cache store!
-        $cachePrefix = $this->cacheStore->getPrefix();
-        $currentUserKey = "";
+        $cachePrefix = $this->cachePrefix;
+        // initialize the key to be just the cache prefix as the "zero string".
+        $currentActualKey = $cachePrefix;
         // loop until no more items
         while (true) {
             // find the next key
-            $actualKey = "{$cachePrefix}{$currentUserKey}";
             $record = $this->dbConn
                 ->table($this->dbTable)
                 ->select(['key', 'expiration', DB::raw('LENGTH(key) AS key_bytes'), DB::raw('LENGTH(value) AS value_bytes')])
-                ->where('key', '>', $actualKey)
+                ->where('key', '>', $currentActualKey)
                 ->where('key', 'LIKE', "$cachePrefix%")
                 ->limit(1)
                 ->first();
@@ -124,7 +133,7 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
             }
 
             yield $record;
-            $currentUserKey = $record->key;
+            $currentActualKey = $record->key;
         }
         // loop exit handled inside while loop
     }
