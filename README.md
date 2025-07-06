@@ -127,6 +127,10 @@ public function boot()
 ### Will this tool help me reclaim `database` disk spaces?
 No, but if you are using this tool regularly to evict expired items, then you do not need to worry about reclaiming free space. For more details, talk with a system admin/database specialist.
 
+### Can I run this tool during high-traffic hours?
+Sure! This tool is designed with high-traffic situations in mind. It is memory-efficient and (for `database` caches) non-blocking.
+Feel free to run this tool e.g. hourly.
+
 [packagist-url]: https://packagist.org/packages/vectorial1024/laravel-cache-evict
 [packagist-stats-url]: https://packagist.org/packages/vectorial1024/laravel-cache-evict/stats
 [github-repo-url]: https://github.com/Vectorial1024/laravel-cache-evict
