@@ -3,6 +3,11 @@ Note: you may refer to `README.md` for description of features.
 
 ## Dev (WIP)
 
+## 2.0.4 (2025-07-06)
+- Fixed database cache evictor "undefined property" warning (oops!)
+- Fixed database cache evictor handling of cache prefix
+  - This should fix the infinite looping issue
+
 ## 2.0.3 (2025-03-02)
 - Declare compatibility with Laravel 12. 
 
