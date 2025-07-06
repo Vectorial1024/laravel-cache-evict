@@ -41,7 +41,6 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
         // read the cache config and set up targets
         $this->deletedRecords = 0;
         $this->deletedRecordSizes = 0;
-        $this->deletedDirs = 0;
         $this->elapsedTime = 0;
 
         // we use a memory-efficient way of deleting items.
