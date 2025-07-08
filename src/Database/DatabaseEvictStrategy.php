@@ -117,14 +117,17 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
         $cachePrefix = $this->cachePrefix;
         // initialize the key to be just the cache prefix as the "zero string".
         $currentActualKey = $cachePrefix;
+        $prefixLength = strlen($cachePrefix);
         // loop until no more items
         while (true) {
             // find the next key
+            // note: different SQL flavors have different interpretations of LIKE, so we use SUBSTRING instead.
+            // with SUBSTRING, we are clear we want a case-sensitive match, and we might potentially get collation-correct matching
             $record = $this->dbConn
                 ->table($this->dbTable)
                 ->select(['key', 'expiration', DB::raw('LENGTH(key) AS key_bytes'), DB::raw('LENGTH(value) AS value_bytes')])
                 ->where('key', '>', $currentActualKey)
-                ->where('key', 'LIKE', "$cachePrefix%")
+                ->where(DB::raw("SUBSTRING(key, 1, $prefixLength)"), '=', $cachePrefix)
                 ->limit(1)
                 ->first();
             if (!$record) {

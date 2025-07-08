@@ -3,6 +3,10 @@ Note: you may refer to `README.md` for description of features.
 
 ## Dev (WIP)
 
+## 2.0.5
+- Improved database cache evictor handling of cache prefix
+  - This should improve correctness
+
 ## 2.0.4 (2025-07-06)
 - Fixed database cache evictor "undefined property" warning (oops!)
 - Fixed database cache evictor handling of cache prefix
