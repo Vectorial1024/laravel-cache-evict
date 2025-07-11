@@ -2,10 +2,12 @@
 Note: you may refer to `README.md` for description of features.
 
 ## Dev (WIP)
+
+## 2.0.6 (2025-07-11)
 - Fixed database cache evictor stopping midway while iterating through the cache table
   - This problem was seen on PostgreSQL (see #11), but perhaps some other database engines are also affected
 
-## 2.0.5
+## 2.0.5 (2025-07-08)
 - Improved database cache evictor handling of cache prefix
   - This should improve correctness
 
