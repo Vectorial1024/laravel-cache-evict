@@ -34,7 +34,7 @@ Note: you may refer to `README.md` for description of features.
   - Note: no code change required!
 
 ## 1.0.3 (2025-01-07)
-Special note: this update is made in response to the external rugpull as discovered in #4. All previous versions are "tainted" and will not be supported, effective immediately. Update your installed version now!!!
+Special note: this update is made in response to the external rugpull as discovered in [#4](https://github.com/Vectorial1024/laravel-cache-evict/issues/4). All previous versions are "tainted" and will not be supported, effective immediately. Update your installed version now!!!
 - No longer depends on `ramazancetinkaya/byte-formatter` as culprit of rugpull
   - A StackOverflow-copied solution is being used for now
   - A proper solution will be made later
