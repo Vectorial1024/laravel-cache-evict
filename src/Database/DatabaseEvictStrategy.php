@@ -128,6 +128,8 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
                 ->select(['key', 'expiration', DB::raw('LENGTH(key) AS key_bytes'), DB::raw('LENGTH(value) AS value_bytes')])
                 ->where('key', '>', $currentActualKey)
                 ->where(DB::raw("SUBSTRING(key, 1, $prefixLength)"), '=', $cachePrefix)
+                // PostgreSQL: if no sorting specified, then will ignore primary key index/ordering, which breaks the intended workflow
+                ->orderBy('key')
                 ->limit(1)
                 ->first();
             if (!$record) {
