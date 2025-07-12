@@ -125,7 +125,7 @@ public function boot()
 ```
 
 ### Will this tool help me reclaim `database` disk spaces?
-No, but if you are using this tool regularly to evict expired items, then you do not need to worry about reclaiming free space. For more details, talk with a system admin/database specialist.
+No, but if you are using this tool regularly to evict expired items, then you usually do not need to worry about reclaiming those disk spaces. For more details, talk with a system admin/database specialist.
 
 ### Can I run this tool during high-traffic hours?
 Sure! This tool is designed with high-traffic situations in mind. It is memory-efficient and (for `database` caches) non-blocking.
