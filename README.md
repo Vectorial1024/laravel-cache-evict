@@ -18,7 +18,7 @@ As of writing, several Laravel cache drivers do not have automatic removal of ex
 ### Why is it a problem?
 Using any of the above cache drivers without regularly removing the expired items (aka "key eviction" in Redis) can result in storage overload, especially when you are creating a lot of temporary items with random keys.
 
-The `cache:clear` command from Laravel works, but might not be the thing you want. It does not check item expiry (it removes everything), and also clears the Laravel framework cache (e.g. `/bootstrap/cache/*`), which can be especially problematic when you are using the `file` cache driver (consider a case: cache items are created by the `www-data` user but `/bootstrap/cache/*` is owned by the `ubuntu` user).
+The `cache:clear` command from Laravel works, but might not be the thing you want. It does not check item expiry (it removes everything), and also removes cached Laravel facades in `/storage/framework/cache/`, which can be especially problematic when you are using the `file` cache driver (consider a case: cache items are created by the `www-data` user but `/storage/framework/cache/*` is owned by the `ubuntu` user).
 
 In this case, this tool can help you remove only the expired items in your cache. See below sections for more details.
 
