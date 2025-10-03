@@ -4,8 +4,8 @@ Note: you may refer to `README.md` for description of features.
 ## Dev (WIP)
 
 ## 2.0.7 (2025-10-04)
-- Fixed database cache evictor entirely not working for MySQL and SQL Server
-  - Sample error message on MySQL: `You have an error in your SQL syntax [...]`
+- Fixed database cache evictor crashing due to bad SQL command
+  - This problem was seen on MySQL and SQL Server (see [#19](https://github.com/Vectorial1024/laravel-cache-evict/issues/19)), but perhaps some other database engines are also affected
 - Fixed wrong console kernel schedule example code
 
 ## 2.0.6 (2025-07-11)
