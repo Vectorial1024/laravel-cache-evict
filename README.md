@@ -70,7 +70,7 @@ use Vectorial1024\LaravelCacheEvict\CacheEvictCommand;
 Schedule::command(CacheEvictCommand::class)->daily()->runInBackground();
 
 // you may also specify the cache to clear; e.g. the file cache defined in cache.php:
-Schedule::command(CacheEvictCommand::class, ['target' => 'file'])->daily()->runInBackground();
+Schedule::command(CacheEvictCommand::class, 'file')->daily()->runInBackground();
 ```
 
 ### The relationship with `cache.php`
