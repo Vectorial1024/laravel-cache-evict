@@ -2,6 +2,8 @@
 Note: you may refer to `README.md` for description of features.
 
 ## Dev (WIP)
+- Fixed database cache evictor entirely not working for MySQL and SQL Server
+  - Sample error message on MySQL: `You have an error in your SQL syntax [...]`
 - Fixed wrong console kernel schedule example code
 
 ## 2.0.6 (2025-07-11)

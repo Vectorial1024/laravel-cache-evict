@@ -29,7 +29,7 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
 
     public function __construct(string $storeName)
     {
-        parent::__construct($storeName);    
+        parent::__construct($storeName);
 
         // read cache details, and set the specs
         $storeConn = config("cache.stores.{$storeName}.connection");
@@ -125,9 +125,9 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
             // with SUBSTRING, we are clear we want a case-sensitive match, and we might potentially get collation-correct matching
             $record = $this->dbConn
                 ->table($this->dbTable)
-                ->select(['key', 'expiration', DB::raw('LENGTH(key) AS key_bytes'), DB::raw('LENGTH(value) AS value_bytes')])
+                ->select(['key', 'expiration', DB::raw('LENGTH(`key`) AS key_bytes'), DB::raw('LENGTH(value) AS value_bytes')])
                 ->where('key', '>', $currentActualKey)
-                ->where(DB::raw("SUBSTRING(key, 1, $prefixLength)"), '=', $cachePrefix)
+                ->where(DB::raw("SUBSTRING(`key`, 1, $prefixLength)"), '=', $cachePrefix)
                 // PostgreSQL: if no sorting specified, then will ignore primary key index/ordering, which breaks the intended workflow
                 ->orderBy('key')
                 ->limit(1)
