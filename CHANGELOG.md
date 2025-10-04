@@ -3,7 +3,12 @@ Note: you may refer to `README.md` for description of features.
 
 ## Dev (WIP)
 
-## 2.0.7 (2025-10-04)
+## 2.0.8 (2025-10-04)
+- Improved database evictor speed by using chunked deletes
+  - Estimated total size evicted is no longer tracked because this tool does not actually free table spaces anyway
+  - The internals of the database evictor is changed, but this change should have low impact
+
+## 2.0.7 (2025-10-03)
 - Fixed database cache evictor crashing due to bad SQL command
   - This problem was seen on MySQL and SQL Server (see [#19](https://github.com/Vectorial1024/laravel-cache-evict/issues/19)), but perhaps some other database engines are also affected
 - Fixed wrong console kernel schedule example code
