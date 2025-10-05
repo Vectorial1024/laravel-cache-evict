@@ -2,6 +2,7 @@
 Note: you may refer to `README.md` for description of features.
 
 ## Dev (WIP)
+- Fixed inaccurate "directories removed" statistics for the file evictor
 
 ## 2.0.8 (2025-10-04)
 - Improved database evictor speed by using chunked deletes

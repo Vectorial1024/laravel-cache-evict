@@ -65,10 +65,11 @@ class FileEvictStrategy extends AbstractEvictStrategy
             // handle cache files, then delete the directory in the same place
             $this->handleCacheFilesInDirectory($dir);
             $progressBar->advance();
-            // it's OK if we cannot remove directories; this usually means the directory is not empty.
+            // it's OK if we cannot remove directories; this usually means the directory still contains non-expired items.
             $localPath = $this->filesystem->path($dir);
-            @rmdir($localPath);
-            $this->deletedDirs++;
+            if (@rmdir($localPath)) {
+                $this->deletedDirs++;
+            }
         }
 
         $progressBar->finish();
