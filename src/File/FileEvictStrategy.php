@@ -70,6 +70,9 @@ class FileEvictStrategy extends AbstractEvictStrategy
             if (@rmdir($localPath)) {
                 $this->deletedDirs++;
             }
+
+            // reduce stampeding
+            usleep(1000);
         }
 
         $progressBar->finish();

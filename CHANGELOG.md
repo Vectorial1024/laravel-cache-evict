@@ -2,6 +2,7 @@
 Note: you may refer to `README.md` for description of features.
 
 ## Dev (WIP)
+- Added slight delays in the file & database evictor to reduce cache stampeding
 - Fixed inaccurate "directories removed" statistics for the file evictor
 
 ## 2.0.8 (2025-10-04)

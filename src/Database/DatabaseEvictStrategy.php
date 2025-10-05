@@ -94,6 +94,9 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
                 // items really expired with no new updates
                 $this->deletedRecords += $rowsAffected;
             }
+
+            // reduce stampeding
+            usleep(1000);
         }
 
         // report results:
