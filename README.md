@@ -73,6 +73,47 @@ Schedule::command(CacheEvictCommand::class)->daily()->runInBackground();
 Schedule::command(CacheEvictCommand::class, ['file'])->daily()->runInBackground();
 ```
 
+### Listening for eviction completion
+Sometimes, it may be required to listen for cache eviction completion (e.g., to log some eviction stats for analytics). This tool now has built-in Laravel events to conveniently listen to cache eviction completion:
+
+- `Vectorial1024\LaravelCacheEvict\Events\CacheEvictionCompleted`: fired when cache eviction is complete
+
+Refer to the Laravel docs for setting up the event listener.
+
+Note: the `CacheEvictionCompleted` event is emitted with an `AbstractEvictStrategy` object to remain general. Use the following ways to specify the exact cache store that should be listened to:
+
+- Use `$event->evictStrategy->storeName` to check the name of the cache; or
+- Use `instanceof` to type-check for specific type of cache
+
+An example event listener `handle` function body is provided:
+
+```php
+use Vectorial1024\LaravelCacheEvict\Events\CacheEvictionCompleted;
+use Vectorial1024\LaravelCacheEvict\Database\DatabaseEvictStrategy;
+use Vectorial1024\LaravelCacheEvict\File\FileEvictStrategy;
+
+// ...
+
+public function handle(CacheEvictionCompleted $event): void
+{
+    // abstract instance 
+    $cacheStrat = $event->evictStrategy;
+    if ($cacheStrat instanceof FileEvictStrategy) {
+        // this was an eviction on a file cache...
+        return;
+    }
+    if ($cacheStrat instanceof DatabaseEvictStrategy) {
+        // this was an eviction on a database cache...
+        return; 
+    }
+    if ($cacheStrat->storeName == 'storeName') {
+        // this was an eviction on a cache named 'storeName'...
+        return;
+    }
+    // ...
+}
+```
+
 ### The relationship with `cache.php`
 This tool checks the cache *name* (not *driver*!) inside `cache.php` to determine which cache to clear. This means, if you have the following `cache.php` ...
 
