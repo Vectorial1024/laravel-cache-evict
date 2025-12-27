@@ -46,6 +46,24 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
         $this->cachePrefix = $this->cacheStore->getPrefix();
     }
 
+    /**
+     * Returns the number of records deleted in this eviction.
+     * @return int
+     */
+    public function getDeletedRecords(): int
+    {
+        return $this->deletedRecords;
+    }
+
+    /**
+     * Returns the total time elapsed (in seconds) during this eviction.
+     * @return float
+     */
+    public function getElapsedTime(): float
+    {
+        return $this->elapsedTime;
+    }
+
     public function execute(): void
     {
         // read the cache config and set up targets
