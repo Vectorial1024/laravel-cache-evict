@@ -3,6 +3,7 @@
 namespace Vectorial1024\LaravelCacheEvict;
 
 use Illuminate\Console\Command;
+use Vectorial1024\LaravelCacheEvict\Events\CacheEvictionCompleted;
 
 class CacheEvictCommand extends Command
 {
@@ -68,7 +69,9 @@ class CacheEvictCommand extends Command
         $this->info("Evicting expired items...");
         $evictStrat->execute();
 
+        // notify eviction complete
         $this->info("Eviction complete.");
+        CacheEvictionCompleted::dispatch($evictStrat);
         return self::SUCCESS;
     }
 }
