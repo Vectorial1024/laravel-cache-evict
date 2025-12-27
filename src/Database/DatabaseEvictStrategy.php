@@ -150,7 +150,7 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
                 ->table($this->dbTable)
                 ->select(['key', 'expiration'])
                 ->where('key', '>', $currentActualKey)
-                ->where(DB::raw("SUBSTRING(" . $this->dbConn->getQueryGrammar()->wrap('key') . " FROM 1 FOR $prefixLength)"), '=', $cachePrefix)
+                ->where(DB::raw("SUBSTRING(" . $this->dbConn->getQueryGrammar()->wrap('key') . ", 1, $prefixLength)"), '=', $cachePrefix)
                 // PostgreSQL: if no sorting specified, then will ignore primary key index/ordering, which breaks the intended workflow
                 ->orderBy('key')
                 ->limit($chunkCount)
