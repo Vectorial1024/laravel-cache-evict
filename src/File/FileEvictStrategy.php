@@ -37,6 +37,42 @@ class FileEvictStrategy extends AbstractEvictStrategy
         ]);
     }
 
+    /**
+     * Returns the number of files deleted in this eviction.
+     * @return int
+     */
+    public function getDeletedFiles(): int
+    {
+        return $this->deletedFiles;
+    }
+
+    /**
+     * Returns the total file size (in bytes) of the deleted files of this eviction.
+     * @return int
+     */
+    public function getDeletedFileSize(): int
+    {
+        return $this->deletedFileSize;
+    }
+
+    /**
+     * Returns the number of directories deleted in this eviction.
+     * @return int
+     */
+    public function getDeletedDirs(): int
+    {
+        return $this->deletedDirs;
+    }
+
+    /**
+     * Returns the total time elapsed (in seconds) during this eviction.
+     * @return float
+     */
+    public function getElapsedTime(): float
+    {
+        return $this->elapsedTime;
+    }
+
     public function execute(): void
     {
         // read the cache config and set up targets
