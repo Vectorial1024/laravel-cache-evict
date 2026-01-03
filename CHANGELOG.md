@@ -2,6 +2,7 @@
 Note: you may refer to `README.md` for description of features.
 
 ## Dev (WIP)
+- Added Laravel events to listen for "eviction completed" events
 - Fixed wrong console kernel schedule example code again (f04649226748ddaad605774513c1f387a5d654f2)
 
 ## 2.0.9 (2025-10-05)
