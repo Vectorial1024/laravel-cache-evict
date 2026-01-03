@@ -10,7 +10,7 @@ use Wilderborn\Partyline\ServiceProvider;
 /**
  * The base class to test our various cache-specific behaviors.
  */
-abstract class AbstractCacheEvictStrategyTest extends TestCase
+abstract class AbstractCacheEvictStrategyTestCase extends TestCase
 {
     public function getProjectRoot(): string
     {
