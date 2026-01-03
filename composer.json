@@ -45,7 +45,8 @@
         "ext-intl": "Enables using Laravel's `Number::fileSize()` for size reporting"
     },
     "scripts": {
-        "test": "vendor/bin/phpunit test"
+        "test": "vendor/bin/phpunit test",
+        "test-sqlite": "vendor/bin/phpunit --testsuite sqlite"
     },
     "extra": {
         "laravel": {
