@@ -4,7 +4,7 @@ Note: you may refer to `README.md` for description of features.
 ## Dev (WIP)
 - Added Laravel events to listen for "eviction completed" events
 - Fixed wrong console kernel schedule example code again (f04649226748ddaad605774513c1f387a5d654f2)
-- Fixed improper cache prefix key handling in PostgreSQL (see #22; credits to @rubybrowncoat)
+- Fixed improper cache prefix key handling in PostgreSQL (see [#22](https://github.com/Vectorial1024/laravel-cache-evict/issues/22); credits to @rubybrowncoat)
 
 ## 2.0.9 (2025-10-05)
 - Added slight delays in the file & database evictor to reduce cache stampeding
