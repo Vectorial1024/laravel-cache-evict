@@ -2,7 +2,7 @@
 <phpunit>
     <testsuites>
         <testsuite name="sqlite">
-            <directory>tests/sqlite</directory>
+            <directory>test/SQLite</directory>
         </testsuite>
     </testsuites>
 </phpunit>
