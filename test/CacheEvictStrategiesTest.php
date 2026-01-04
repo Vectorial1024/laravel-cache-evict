@@ -13,6 +13,10 @@ use Vectorial1024\LaravelCacheEvict\Database\DatabaseEvictStrategy;
 use Vectorial1024\LaravelCacheEvict\EvictionRefusedFeatureExistsException;
 use Vectorial1024\LaravelCacheEvict\File\FileEvictStrategy;
 
+/**
+ * This test class handles general test cases of this package,
+ * e.g. whether it may correctly determine which eviction strategy to use.
+ */
 class CacheEvictStrategiesTest extends TestCase
 {
     private string $sqliteDbName;

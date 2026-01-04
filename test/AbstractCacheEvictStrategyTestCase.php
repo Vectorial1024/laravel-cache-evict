@@ -8,7 +8,8 @@ use Vectorial1024\LaravelCacheEvict\CacheEvictStrategies;
 use Wilderborn\Partyline\ServiceProvider;
 
 /**
- * The base class to test our various cache-specific behaviors.
+ * The base class to test our various cache-specific behaviors,
+ * to ensure our eviction works on each supported cache/storage driver.
  */
 abstract class AbstractCacheEvictStrategyTestCase extends TestCase
 {
