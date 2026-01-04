@@ -48,6 +48,10 @@ class CacheEvictStrategiesTest extends TestCase
 
         $strategy = CacheEvictStrategies::getEvictionStrategy('database', CacheEvictStrategies::DRIVER_DATABASE);
         $this->assertInstanceOf(DatabaseEvictStrategy::class, $strategy);
+
+        // correctly handle unknown cases
+        $strategy = CacheEvictStrategies::getEvictionStrategy('foo', 'bar');
+        $this->assertNull($strategy);
     }
 
     public function testNoOverridingStrategies()
