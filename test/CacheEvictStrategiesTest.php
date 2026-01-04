@@ -18,9 +18,6 @@ use Wilderborn\Partyline\ServiceProvider;
  */
 class CacheEvictStrategiesTest extends TestCase
 {
-    private string $sqliteDbName;
-    private SQLite3 $sqliteDb;
-
     public function setUp(): void
     {
         parent::setUp();
