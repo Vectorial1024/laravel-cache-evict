@@ -1,4 +1,4 @@
-name: PHP Composer
+name: Test (SQLite Cache)
 
 on:
   push:
