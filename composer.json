@@ -46,6 +46,7 @@
     },
     "scripts": {
         "test": "vendor/bin/phpunit test",
+        "test-file": "vendor/bin/phpunit --testsuite file",
         "test-sqlite": "vendor/bin/phpunit --testsuite sqlite"
     },
     "extra": {

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit>
     <testsuites>
+        <testsuite name="file">
+            <directory>test/File</directory>
+        </testsuite>
         <testsuite name="sqlite">
             <directory>test/SQLite</directory>
         </testsuite>
