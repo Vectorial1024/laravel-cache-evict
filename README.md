@@ -148,6 +148,15 @@ PHPUnit (using `orchestra/testbench`) via Composer:
 composer run-script test
 ```
 
+The above command only runs the "core" test cases that ensures the core functionalities (e.g. selecting the correct eviction strategy) are working.
+
+To further test vendor-specific eviction correctness, have a look at the various Composer scripts:
+
+- `test-file`: tests for the Laravel file cache
+- `test-sqlite`: tests for the Laravel database cache (using SQLite)
+
+It may be more convenient to rely on GitHub Workflow to test/review eviction correctness.
+
 ## Frequently-asked questions (FAQ)
 
 ### How to define custom eviction strategies?
