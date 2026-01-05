@@ -31,6 +31,7 @@ class SQLiteEvictTest extends AbstractDatabaseCacheEvictTestCase
         $this->sqliteDb->exec(<<<SQL
             CREATE TABLE "cache_locks" ("key" varchar not null, "owner" varchar not null, "expiration" integer not null, primary key ("key"))
         SQL);
+        $this->sqliteDb->close();
         Config::set('database.connections.sqlite.driver', 'sqlite');
         Config::set('database.connections.sqlite.url', '');
         Config::set('database.connections.sqlite.database', $this->sqliteDbName);
@@ -46,7 +47,6 @@ class SQLiteEvictTest extends AbstractDatabaseCacheEvictTestCase
 
     protected function tearDownCache(): void
     {
-        $this->sqliteDb->close();
         unlink($this->sqliteDbName);
     }
 
@@ -58,5 +58,16 @@ class SQLiteEvictTest extends AbstractDatabaseCacheEvictTestCase
     protected function getCacheDriverName(): string
     {
         return CacheEvictStrategies::DRIVER_DATABASE;
+    }
+
+    function configureDatabaseCacheStoreForPrefix(string $cacheName, string|null $intendedPrefix = null): void
+    {
+        Config::set("cache.stores.$cacheName.driver", 'database');
+        Config::set("cache.stores.$cacheName.table", 'cache');
+        Config::set("cache.stores.$cacheName.connection", 'sqlite');
+        Config::set("cache.stores.$cacheName.lock_connection", '');
+        if ($intendedPrefix !== null) {
+            Config::set("cache.stores.$cacheName.prefix", $intendedPrefix);
+        }
     }
 }
