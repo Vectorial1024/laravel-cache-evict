@@ -10,7 +10,6 @@ use Vectorial1024\LaravelCacheEvict\Test\AbstractDatabaseCacheEvictTestCase;
 class SQLiteEvictTest extends AbstractDatabaseCacheEvictTestCase
 {
     private string $sqliteDbName;
-    private SQLite3 $sqliteDb;
 
     protected function setUpCache(): void
     {
@@ -18,20 +17,20 @@ class SQLiteEvictTest extends AbstractDatabaseCacheEvictTestCase
         $projectRoot = $this->getProjectRoot();
 
         $this->sqliteDbName = "$projectRoot/database/database.sqlite";
-        $this->sqliteDb = new SQLite3($this->sqliteDbName);
-        $this->sqliteDb->exec('DROP TABLE IF EXISTS "cache"');
-        $this->sqliteDb->exec(<<<SQL
+        $sqliteDb = new SQLite3($this->sqliteDbName);
+        $sqliteDb->exec('DROP TABLE IF EXISTS "cache"');
+        $sqliteDb->exec(<<<SQL
             CREATE TABLE "cache" (
                 "key"	varchar NOT NULL,
                 "value"	TEXT NOT NULL,
                 "expiration"	INTEGER NOT NULL,
             PRIMARY KEY("key"))
         SQL);
-        $this->sqliteDb->exec('DROP TABLE IF EXISTS "cache_locks"');
-        $this->sqliteDb->exec(<<<SQL
+        $sqliteDb->exec('DROP TABLE IF EXISTS "cache_locks"');
+        $sqliteDb->exec(<<<SQL
             CREATE TABLE "cache_locks" ("key" varchar not null, "owner" varchar not null, "expiration" integer not null, primary key ("key"))
         SQL);
-        $this->sqliteDb->close();
+        $sqliteDb->close();
         Config::set('database.connections.sqlite.driver', 'sqlite');
         Config::set('database.connections.sqlite.url', '');
         Config::set('database.connections.sqlite.database', $this->sqliteDbName);
@@ -39,10 +38,7 @@ class SQLiteEvictTest extends AbstractDatabaseCacheEvictTestCase
         Config::set('database.connections.sqlite.foreign_key_constraints', true);
 
         // then, database cache
-        Config::set('cache.stores.database.driver', 'database');
-        Config::set('cache.stores.database.table', 'cache');
-        Config::set('cache.stores.database.connection', 'sqlite');
-        Config::set('cache.stores.database.lock_connection', '');
+        $this->configureDatabaseCacheStoreForPrefix('database');
     }
 
     protected function tearDownCache(): void
