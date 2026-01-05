@@ -25,6 +25,9 @@ jobs:
         user: 'testuser'
         password: 'testpass'
 
+    - name: Verify MySQL
+      run: mysql -uroot -e 'SELECT version()'
+
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
 
