@@ -4,6 +4,9 @@
         <testsuite name="file">
             <directory>test/File</directory>
         </testsuite>
+        <testsuite name="mysql">
+            <directory>test/MySQL</directory>
+        </testsuite>
         <testsuite name="sqlite">
             <directory>test/SQLite</directory>
         </testsuite>

@@ -1,0 +1,86 @@
+<?php
+
+namespace Vectorial1024\LaravelCacheEvict\Test\MySQL;
+
+use Illuminate\Support\Facades\Config;
+use PDO;
+use PDOException;
+use Vectorial1024\LaravelCacheEvict\CacheEvictStrategies;
+use Vectorial1024\LaravelCacheEvict\Test\AbstractDatabaseCacheEvictTestCase;
+
+class MySQLEvictTest extends AbstractDatabaseCacheEvictTestCase
+{
+    protected function setUpCache(): void
+    {
+        // we need to set up an SQLite db file on disk, so that the test script can correctly use it
+        $projectRoot = $this->getProjectRoot();
+
+        $dbHost = 'localhost';
+        $dbUser = 'testuser';
+        $dbPass = 'testpass';
+
+        try {
+            $conn = new PDO("mysql:host=$dbHost", $dbUser, $dbPass);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $x) {
+            $this->fail("Could not use PDO: " . $x->getMessage());
+        }
+
+        $conn->exec("CREATE DATABASE laravel");
+        $conn->exec("USE laravel");
+
+        $conn->exec(<<<SQL
+            CREATE TABLE "cache" (
+                "key"	varchar NOT NULL,
+                "value"	TEXT NOT NULL,
+                "expiration"	INTEGER NOT NULL,
+            PRIMARY KEY("key"))
+SQL);
+        $conn->exec(<<<SQL
+            CREATE TABLE "cache_locks" (
+                "key" VARCHAR NOT NULL,
+                "owner" VARCHAR NOT NULL,
+                "expiration" INTEGER NOT NULL,
+            PRIMARY KEY ("key"))
+SQL);
+        // close connection
+        $conn = null;
+
+        Config::set('database.connections.mysql.driver', 'mysql');
+        Config::set('database.connections.mysql.host', '127.0.0.1');
+        Config::set('database.connections.mysql.port', '3306');
+        Config::set('database.connections.mysql.database', 'laravel');
+        Config::set('database.connections.mysql.username', $dbUser);
+        Config::set('database.connections.mysql.password', $dbPass);
+        Config::set('database.connections.mysql.charset', 'utf8mb4');
+        Config::set('database.connections.mysql.collation', 'utf8mb4_unicode_ci');
+
+        // then, database cache
+        $this->configureDatabaseCacheStoreForPrefix('database');
+    }
+
+    protected function tearDownCache(): void
+    {
+    }
+
+    protected function getStoreName(): string
+    {
+        return "database";
+    }
+
+    protected function getCacheDriverName(): string
+    {
+        return CacheEvictStrategies::DRIVER_DATABASE;
+    }
+
+    function configureDatabaseCacheStoreForPrefix(string $cacheName, string|null $intendedPrefix = null): void
+    {
+        Config::set("cache.stores.$cacheName.driver", 'database');
+        Config::set("cache.stores.$cacheName.table", 'cache');
+        Config::set("cache.stores.$cacheName.connection", 'sqlite');
+        Config::set("cache.stores.$cacheName.lock_connection", '');
+        if ($intendedPrefix !== null) {
+            Config::set("cache.stores.$cacheName.prefix", $intendedPrefix);
+        }
+    }
+}
