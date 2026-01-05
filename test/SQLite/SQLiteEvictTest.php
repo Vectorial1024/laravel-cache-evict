@@ -5,9 +5,9 @@ namespace Vectorial1024\LaravelCacheEvict\Test\SQLite;
 use Illuminate\Support\Facades\Config;
 use SQLite3;
 use Vectorial1024\LaravelCacheEvict\CacheEvictStrategies;
-use Vectorial1024\LaravelCacheEvict\Test\AbstractCacheEvictTestCase;
+use Vectorial1024\LaravelCacheEvict\Test\AbstractDatabaseCacheEvictTestCase;
 
-class SQLiteEvictTest extends AbstractCacheEvictTestCase
+class SQLiteEvictTest extends AbstractDatabaseCacheEvictTestCase
 {
     private string $sqliteDbName;
     private SQLite3 $sqliteDb;

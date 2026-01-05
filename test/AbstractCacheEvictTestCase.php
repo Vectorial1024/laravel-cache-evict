@@ -43,6 +43,11 @@ abstract class AbstractCacheEvictTestCase extends TestCase
         ];
     }
 
+    protected function generateRandomKey(): string
+    {
+        return "k" . mt_rand();
+    }
+
     public function testCorrectCacheEviction(): void
     {
         $storeName = $this->getStoreName();
@@ -51,12 +56,10 @@ abstract class AbstractCacheEvictTestCase extends TestCase
         // generate two sets of key-value pair: one is expired, another is not
         // to test our eviction really removes the correct expired item
 
-        $testNumber = mt_rand();
-        $testKeyExpire = "k$testNumber";
-        $testValueExpire = md5($testNumber);
-        $testNumber = mt_rand();
-        $testKeyForever = "k$testNumber";
-        $testValueForever = md5($testNumber);
+        $testKeyExpire = $this->generateRandomKey();
+        $testValueExpire = md5($testKeyExpire);
+        $testKeyForever = $this->generateRandomKey();
+        $testValueForever = md5($testKeyForever);
         $store = Cache::store($storeName);
 
         // first ensure both do not already exist
