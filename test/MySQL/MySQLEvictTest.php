@@ -12,10 +12,7 @@ class MySQLEvictTest extends AbstractDatabaseCacheEvictTestCase
 {
     protected function setUpCache(): void
     {
-        // we need to set up an SQLite db file on disk, so that the test script can correctly use it
-        $projectRoot = $this->getProjectRoot();
-
-        $dbHost = 'localhost';
+        $dbHost = '127.0.0.1';
         $dbUser = 'testuser';
         $dbPass = 'testpass';
 
