@@ -15,7 +15,7 @@ abstract class AbstractCacheEvictTestCase extends TestCase
 {
     public function getProjectRoot(): string
     {
-        return dirname(__FILE__, 2);
+        return dirname(__FILE__, 3);
     }
 
     public function setUp(): void
