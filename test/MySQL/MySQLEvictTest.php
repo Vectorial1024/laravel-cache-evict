@@ -10,6 +10,8 @@ use Vectorial1024\LaravelCacheEvict\Test\AbstractDatabaseCacheEvictTestCase;
 
 class MySQLEvictTest extends AbstractDatabaseCacheEvictTestCase
 {
+    private PDO|null $pdo;
+    
     protected function setUpCache(): void
     {
         $dbHost = '127.0.0.1';
@@ -17,31 +19,29 @@ class MySQLEvictTest extends AbstractDatabaseCacheEvictTestCase
         $dbPass = 'testpass';
 
         try {
-            $conn = new PDO("mysql:host=$dbHost", $dbUser, $dbPass);
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->pdo = new PDO("mysql:host=$dbHost", $dbUser, $dbPass);
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $x) {
             $this->fail("Could not use PDO: " . $x->getMessage());
         }
 
-        $conn->exec("CREATE DATABASE laravel");
-        $conn->exec("USE laravel");
+        $this->pdo->exec("CREATE DATABASE laravel");
+        $this->pdo->exec("USE laravel");
 
-        $conn->exec(<<<SQL
-            CREATE TABLE "cache" (
-                "key"	varchar NOT NULL,
+        $this->pdo->exec(<<<SQL
+            CREATE TABLE cache (
+                "key"	VARCHAR(255) NOT NULL,
                 "value"	TEXT NOT NULL,
                 "expiration"	INTEGER NOT NULL,
             PRIMARY KEY("key"))
 SQL);
-        $conn->exec(<<<SQL
-            CREATE TABLE "cache_locks" (
-                "key" VARCHAR NOT NULL,
-                "owner" VARCHAR NOT NULL,
+        $this->pdo->exec(<<<SQL
+            CREATE TABLE cache_locks (
+                "key" VARCHAR(255) NOT NULL,
+                "owner" VARCHAR(255) NOT NULL,
                 "expiration" INTEGER NOT NULL,
             PRIMARY KEY ("key"))
 SQL);
-        // close connection
-        $conn = null;
 
         Config::set('database.connections.mysql.driver', 'mysql');
         Config::set('database.connections.mysql.host', '127.0.0.1');
@@ -58,6 +58,11 @@ SQL);
 
     protected function tearDownCache(): void
     {
+        // drop database
+        $this->pdo->exec("DROP DATABASE laravel");
+
+        // close connection
+        $this->pdo = null;
     }
 
     protected function getStoreName(): string
