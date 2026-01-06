@@ -1,12 +1,9 @@
 <?php
 
-namespace Vectorial1024\LaravelCacheEvict\Test;
+namespace Vectorial1024\LaravelCacheEvict\Test\Core;
 
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Config;
-use Orchestra\Testbench\TestCase;
 use Vectorial1024\LaravelCacheEvict\CacheEvictStrategies;
-use Wilderborn\Partyline\ServiceProvider;
 
 /**
  * The base class to test our various database-specific cache eviction.

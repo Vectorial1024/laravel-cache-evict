@@ -1,11 +1,10 @@
 <?php
 
-namespace Vectorial1024\LaravelCacheEvict\Test;
+namespace Vectorial1024\LaravelCacheEvict\Test\Core;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Config;
 use Orchestra\Testbench\TestCase;
-use SQLite3;
 use Vectorial1024\LaravelCacheEvict\CacheEvictStrategies;
 use Vectorial1024\LaravelCacheEvict\Database\DatabaseEvictStrategy;
 use Vectorial1024\LaravelCacheEvict\EvictionRefusedFeatureExistsException;

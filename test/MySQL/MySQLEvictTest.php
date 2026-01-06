@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Config;
 use PDO;
 use PDOException;
 use Vectorial1024\LaravelCacheEvict\CacheEvictStrategies;
-use Vectorial1024\LaravelCacheEvict\Test\AbstractDatabaseCacheEvictTestCase;
+use Vectorial1024\LaravelCacheEvict\Test\Core\AbstractDatabaseCacheEvictTestCase;
 
 class MySQLEvictTest extends AbstractDatabaseCacheEvictTestCase
 {

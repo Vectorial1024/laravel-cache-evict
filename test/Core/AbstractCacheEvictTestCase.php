@@ -1,6 +1,6 @@
 <?php
 
-namespace Vectorial1024\LaravelCacheEvict\Test;
+namespace Vectorial1024\LaravelCacheEvict\Test\Core;
 
 use Illuminate\Support\Facades\Cache;
 use Orchestra\Testbench\TestCase;

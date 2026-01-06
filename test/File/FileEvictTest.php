@@ -4,7 +4,7 @@ namespace Vectorial1024\LaravelCacheEvict\Test\File;
 
 use Illuminate\Support\Facades\Config;
 use Vectorial1024\LaravelCacheEvict\CacheEvictStrategies;
-use Vectorial1024\LaravelCacheEvict\Test\AbstractCacheEvictTestCase;
+use Vectorial1024\LaravelCacheEvict\Test\Core\AbstractCacheEvictTestCase;
 
 class FileEvictTest extends AbstractCacheEvictTestCase
 {
