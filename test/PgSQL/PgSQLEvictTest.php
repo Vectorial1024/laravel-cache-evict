@@ -37,17 +37,17 @@ class PgSQLEvictTest extends AbstractDatabaseCacheEvictTestCase
 
         $this->pdo->exec(<<<SQL
             CREATE TABLE cache (
-                `key`	VARCHAR(255) NOT NULL,
-                `value`	TEXT NOT NULL,
-                `expiration`	INTEGER NOT NULL,
-            PRIMARY KEY(`key`))
+                "key"	VARCHAR(255) NOT NULL,
+                value	TEXT NOT NULL,
+                expiration	INTEGER NOT NULL,
+            PRIMARY KEY("key"))
 SQL);
         $this->pdo->exec(<<<SQL
             CREATE TABLE cache_locks (
-                `key` VARCHAR(255) NOT NULL,
-                `owner` VARCHAR(255) NOT NULL,
-                `expiration` INTEGER NOT NULL,
-            PRIMARY KEY (`key`))
+                "key" VARCHAR(255) NOT NULL,
+                owner VARCHAR(255) NOT NULL,
+                expiration INTEGER NOT NULL,
+            PRIMARY KEY ("key"))
 SQL);
 
         Config::set('database.connections.pgsql.driver', 'pgsql');
