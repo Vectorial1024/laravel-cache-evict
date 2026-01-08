@@ -16,6 +16,9 @@
         <testsuite name="mysql">
             <directory>test/MySQL</directory>
         </testsuite>
+        <testsuite name="pgsql">
+            <directory>test/PgSQL</directory>
+        </testsuite>
         <testsuite name="sqlite">
             <directory>test/SQLite</directory>
         </testsuite>
