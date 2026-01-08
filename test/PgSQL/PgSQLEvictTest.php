@@ -29,7 +29,16 @@ class PgSQLEvictTest extends AbstractDatabaseCacheEvictTestCase
             $this->fail("Could not use PDO: " . $x->getMessage());
         }
 
+        // in our CI/CD use case it is not convenient to even drop the database.
+        // so the approach is to ensure we have a clean table for testing.
+
+        // create database if not exists <name>
         $this->pdo->exec("CREATE DATABASE laravel");
+        $this->pdo->exec(<<<SQL
+            SELECT 'CREATE DATABASE laravel'
+                WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'laravel')
+SQL);
+
         // postgresql works by specifying the database during connection
         $this->pdo = null;
         try {
@@ -39,20 +48,23 @@ class PgSQLEvictTest extends AbstractDatabaseCacheEvictTestCase
             $this->fail("Could not use PDO: " . $x->getMessage());
         }
 
+        // create the table once; whatever happens, truncate the table to ensure clean starting state.
         $this->pdo->exec(<<<SQL
-            CREATE TABLE cache (
+            CREATE TABLE IF NOT EXISTS cache (
                 "key"	VARCHAR(255) NOT NULL,
                 value	TEXT NOT NULL,
                 expiration	INTEGER NOT NULL,
             PRIMARY KEY("key"))
 SQL);
+        $this->pdo->exec("TRUNCATE cache");
         $this->pdo->exec(<<<SQL
-            CREATE TABLE cache_locks (
+            CREATE TABLE IF NOT EXISTS cache_locks (
                 "key" VARCHAR(255) NOT NULL,
                 owner VARCHAR(255) NOT NULL,
                 expiration INTEGER NOT NULL,
             PRIMARY KEY ("key"))
 SQL);
+        $this->pdo->exec("TRUNCATE cache_locks");
 
         Config::set('database.connections.pgsql.driver', 'pgsql');
         Config::set('database.connections.pgsql.host', '127.0.0.1');
@@ -68,19 +80,8 @@ SQL);
 
     protected function tearDownCache(): void
     {
-        // drop database
-        // postgresql cannot drop the currently open database, so reconnect emptily and then drop database
-        $this->pdo = null;
-        $dbHost = $this->dbHost;
-        $dbUser = $this->dbUser;
-        $dbPass = $this->dbPass;
-        try {
-            $this->pdo = new PDO("pgsql:host=$dbHost", $dbUser, $dbPass);
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $x) {
-            $this->fail("Could not use PDO: " . $x->getMessage());
-        }
-        $this->pdo->exec("DROP DATABASE laravel");
+        // in our CI/CD use case it is not convenient to even drop the database.
+        // so the approach is to ensure we have a clean table for testing.
 
         // close connection
         $this->pdo = null;
