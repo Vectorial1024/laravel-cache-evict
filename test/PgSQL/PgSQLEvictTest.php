@@ -11,12 +11,16 @@ use Vectorial1024\LaravelCacheEvict\Test\Core\AbstractDatabaseCacheEvictTestCase
 class PgSQLEvictTest extends AbstractDatabaseCacheEvictTestCase
 {
     private PDO|null $pdo;
-    
+
+    private string $dbHost = '127.0.0.1';
+    private string $dbUser = 'postgres';
+    private string $dbPass = 'postgres';
+
     protected function setUpCache(): void
     {
-        $dbHost = '127.0.0.1';
-        $dbUser = 'postgres';
-        $dbPass = 'postgres';
+        $dbHost = $this->dbHost;
+        $dbUser = $this->dbUser;
+        $dbPass = $this->dbPass;
 
         try {
             $this->pdo = new PDO("pgsql:host=$dbHost", $dbUser, $dbPass);
@@ -65,6 +69,17 @@ SQL);
     protected function tearDownCache(): void
     {
         // drop database
+        // postgresql cannot drop the currently open database, so reconnect emptily and then drop database
+        $this->pdo = null;
+        $dbHost = $this->dbHost;
+        $dbUser = $this->dbUser;
+        $dbPass = $this->dbPass;
+        try {
+            $this->pdo = new PDO("pgsql:host=$dbHost", $dbUser, $dbPass);
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $x) {
+            $this->fail("Could not use PDO: " . $x->getMessage());
+        }
         $this->pdo->exec("DROP DATABASE laravel");
 
         // close connection
