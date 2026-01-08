@@ -33,8 +33,11 @@ class PgSQLEvictTest extends AbstractDatabaseCacheEvictTestCase
         }
 
         // manually detect whether our database exists
-        $result = $this->pdo->exec("SELECT FROM pg_database WHERE datname = 'laravel'");
-        if (!$result) {
+        $databaseExists = false;
+        foreach ($this->pdo->query("SELECT FROM pg_database WHERE datname = 'laravel'") as $row) {
+            $databaseExists = true;
+        }
+        if (!$databaseExists) {
             // database not created yet
             $this->pdo->exec("CREATE DATABASE laravel");
         }
