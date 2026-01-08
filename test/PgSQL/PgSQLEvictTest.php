@@ -14,7 +14,7 @@ class PgSQLEvictTest extends AbstractDatabaseCacheEvictTestCase
     
     protected function setUpCache(): void
     {
-        $dbHost = 'postgres';
+        $dbHost = '127.0.0.1';
         $dbUser = 'postgres';
         $dbPass = 'postgres';
 
