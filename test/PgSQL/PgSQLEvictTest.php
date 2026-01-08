@@ -26,7 +26,14 @@ class PgSQLEvictTest extends AbstractDatabaseCacheEvictTestCase
         }
 
         $this->pdo->exec("CREATE DATABASE laravel");
-        $this->pdo->exec("USE laravel");
+        // postgresql works by specifying the database during connection
+        $this->pdo = null;
+        try {
+            $this->pdo = new PDO("pgsql:host=$dbHost;dbname=laravel", $dbUser, $dbPass);
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $x) {
+            $this->fail("Could not use PDO: " . $x->getMessage());
+        }
 
         $this->pdo->exec(<<<SQL
             CREATE TABLE cache (
