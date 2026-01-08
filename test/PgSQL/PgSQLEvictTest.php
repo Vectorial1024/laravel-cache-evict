@@ -25,25 +25,27 @@ class PgSQLEvictTest extends AbstractDatabaseCacheEvictTestCase
         // in our CI/CD use case it is not convenient to even drop the database.
         // so the approach is to ensure we have a clean table for testing.
 
-        if ($this->pdo === null) {
-            // haven't connected yet; create the laravel database
-            try {
-                $this->pdo = new PDO("pgsql:host=$dbHost", $dbUser, $dbPass);
-                $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            } catch (PDOException $x) {
-                $this->fail("Could not use PDO: " . $x->getMessage());
-            }
+        try {
+            $this->pdo = new PDO("pgsql:host=$dbHost", $dbUser, $dbPass);
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $x) {
+            $this->fail("Could not use PDO: " . $x->getMessage());
+        }
 
+        // manually detect whether our database exists
+        $result = $this->pdo->exec("SELECT FROM pg_database WHERE datname = 'laravel'");
+        if (!$result) {
+            // database not created yet
             $this->pdo->exec("CREATE DATABASE laravel");
+        }
 
-            // postgresql works by specifying the database during connection
-            $this->pdo = null;
-            try {
-                $this->pdo = new PDO("pgsql:host=$dbHost;dbname=laravel", $dbUser, $dbPass);
-                $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            } catch (PDOException $x) {
-                $this->fail("Could not use PDO: " . $x->getMessage());
-            }
+        // postgresql works by specifying the database during connection
+        $this->pdo = null;
+        try {
+            $this->pdo = new PDO("pgsql:host=$dbHost;dbname=laravel", $dbUser, $dbPass);
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $x) {
+            $this->fail("Could not use PDO: " . $x->getMessage());
         }
 
         // create the table once; whatever happens, truncate the table to ensure clean starting state.
