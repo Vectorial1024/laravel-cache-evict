@@ -10,7 +10,7 @@ use Vectorial1024\LaravelCacheEvict\Test\Core\AbstractDatabaseCacheEvictTestCase
 
 class PgSQLEvictTest extends AbstractDatabaseCacheEvictTestCase
 {
-    private PDO|null $pdo;
+    private PDO|null $pdo = null;
 
     private string $dbHost = '127.0.0.1';
     private string $dbUser = 'postgres';
@@ -22,29 +22,28 @@ class PgSQLEvictTest extends AbstractDatabaseCacheEvictTestCase
         $dbUser = $this->dbUser;
         $dbPass = $this->dbPass;
 
-        try {
-            $this->pdo = new PDO("pgsql:host=$dbHost", $dbUser, $dbPass);
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $x) {
-            $this->fail("Could not use PDO: " . $x->getMessage());
-        }
-
         // in our CI/CD use case it is not convenient to even drop the database.
         // so the approach is to ensure we have a clean table for testing.
 
-        // create database if not exists <name>
-        $this->pdo->exec(<<<SQL
-            SELECT 'CREATE DATABASE laravel'
-                WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'laravel')
-SQL);
+        if ($this->pdo === null) {
+            // haven't connected yet; create the laravel database
+            try {
+                $this->pdo = new PDO("pgsql:host=$dbHost", $dbUser, $dbPass);
+                $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            } catch (PDOException $x) {
+                $this->fail("Could not use PDO: " . $x->getMessage());
+            }
 
-        // postgresql works by specifying the database during connection
-        $this->pdo = null;
-        try {
-            $this->pdo = new PDO("pgsql:host=$dbHost;dbname=laravel", $dbUser, $dbPass);
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $x) {
-            $this->fail("Could not use PDO: " . $x->getMessage());
+            $this->pdo->exec("CREATE DATABASE laravel");
+
+            // postgresql works by specifying the database during connection
+            $this->pdo = null;
+            try {
+                $this->pdo = new PDO("pgsql:host=$dbHost;dbname=laravel", $dbUser, $dbPass);
+                $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            } catch (PDOException $x) {
+                $this->fail("Could not use PDO: " . $x->getMessage());
+            }
         }
 
         // create the table once; whatever happens, truncate the table to ensure clean starting state.
@@ -82,8 +81,7 @@ SQL);
         // in our CI/CD use case it is not convenient to even drop the database.
         // so the approach is to ensure we have a clean table for testing.
 
-        // close connection
-        $this->pdo = null;
+        // we also reuse the connection so we are sure we are really in the laravel database
     }
 
     protected function getStoreName(): string
