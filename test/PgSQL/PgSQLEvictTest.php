@@ -33,7 +33,6 @@ class PgSQLEvictTest extends AbstractDatabaseCacheEvictTestCase
         // so the approach is to ensure we have a clean table for testing.
 
         // create database if not exists <name>
-        $this->pdo->exec("CREATE DATABASE laravel");
         $this->pdo->exec(<<<SQL
             SELECT 'CREATE DATABASE laravel'
                 WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'laravel')
