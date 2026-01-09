@@ -43,7 +43,8 @@ SQL);
             PRIMARY KEY (`key`))
 SQL);
 
-        Config::set('database.connections.mariadb.driver', 'mariadb');
+        // it turns out, Laravel 10 doesn't distinguish between "mariadb" and "mysql" driver.
+        Config::set('database.connections.mariadb.driver', 'mysql');
         Config::set('database.connections.mariadb.host', '127.0.0.1');
         Config::set('database.connections.mariadb.port', '3306');
         Config::set('database.connections.mariadb.database', 'laravel');
