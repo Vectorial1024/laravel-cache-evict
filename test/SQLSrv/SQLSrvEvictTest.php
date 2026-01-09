@@ -74,13 +74,13 @@ SQL);
 SQL);
         $this->pdo->exec("TRUNCATE TABLE cache_locks");
 
-        Config::set('database.connections.pgsql.driver', 'sqlsrv');
-        Config::set('database.connections.pgsql.host', 'localhost');
-        Config::set('database.connections.pgsql.port', '1433');
-        Config::set('database.connections.pgsql.database', 'laravel');
-        Config::set('database.connections.pgsql.username', $dbUser);
-        Config::set('database.connections.pgsql.password', $dbPass);
-        Config::set('database.connections.pgsql.charset', 'utf8');
+        Config::set('database.connections.sqlsrv.driver', 'sqlsrv');
+        Config::set('database.connections.sqlsrv.host', 'localhost');
+        Config::set('database.connections.sqlsrv.port', '1433');
+        Config::set('database.connections.sqlsrv.database', 'laravel');
+        Config::set('database.connections.sqlsrv.username', $dbUser);
+        Config::set('database.connections.sqlsrv.password', $dbPass);
+        Config::set('database.connections.sqlsrv.charset', 'utf8');
 
         // then, database cache
         $this->configureDatabaseCacheStoreForPrefix('database');
