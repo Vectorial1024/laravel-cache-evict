@@ -1,4 +1,4 @@
-name: Test (Core)
+name: Test (MySQL LTS)
 
 on:
   push:
@@ -25,6 +25,15 @@ jobs:
         php-version: '8.1'
         extensions: sqlsrv, pdo_sqlsrv
 
+    - uses: shogo82148/actions-setup-mysql@v1
+      with:
+        mysql-version: 'mysql-8.4'
+        user: 'testuser'
+        password: 'testpass'
+
+    - name: Verify MySQL
+      run: mysql -uroot -e 'SELECT version()'
+
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
 
@@ -44,4 +53,4 @@ jobs:
     # Docs: https://getcomposer.org/doc/articles/scripts.md
 
     - name: Run test suite
-      run: composer run-script test
+      run: composer run-script test-mysql

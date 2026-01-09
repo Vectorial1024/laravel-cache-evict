@@ -1,8 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit>
     <testsuites>
+        <!-- prevent phpunit from running vendor-specific suites unpromoted -->
+        <testsuite name="core">
+            <directory>test/Core</directory>
+        </testsuite>
+
+        <!-- vendor-specific suites -->
+        <testsuite name="file">
+            <directory>test/File</directory>
+        </testsuite>
+        <testsuite name="mariadb">
+            <directory>test/MariaDB</directory>
+        </testsuite>
+        <testsuite name="mysql">
+            <directory>test/MySQL</directory>
+        </testsuite>
+        <testsuite name="pgsql">
+            <directory>test/PgSQL</directory>
+        </testsuite>
         <testsuite name="sqlite">
-            <directory>tests/sqlite</directory>
+            <directory>test/SQLite</directory>
+        </testsuite>
+        <testsuite name="sqlsrv">
+            <directory>test/SQLSrv</directory>
         </testsuite>
     </testsuites>
 </phpunit>

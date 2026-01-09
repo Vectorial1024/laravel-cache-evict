@@ -1,4 +1,4 @@
-name: Test (Core)
+name: Test (PostgreSQL)
 
 on:
   push:
@@ -15,6 +15,19 @@ jobs:
     # ubuntu-latest has PHP 8.1
     # see https://github.com/marketplace/actions/setup-php-action
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
 
     steps:
     - uses: actions/checkout@v4
@@ -44,4 +57,4 @@ jobs:
     # Docs: https://getcomposer.org/doc/articles/scripts.md
 
     - name: Run test suite
-      run: composer run-script test
+      run: composer run-script test-pgsql
