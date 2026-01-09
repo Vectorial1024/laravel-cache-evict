@@ -44,6 +44,7 @@ SQL);
 SQL);
 
         // it turns out, Laravel 10 doesn't distinguish between "mariadb" and "mysql" driver.
+        // Distinction begins in Laravel 11.
         Config::set('database.connections.mariadb.driver', 'mysql');
         Config::set('database.connections.mariadb.host', '127.0.0.1');
         Config::set('database.connections.mariadb.port', '3306');
