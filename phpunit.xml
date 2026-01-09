@@ -22,5 +22,8 @@
         <testsuite name="sqlite">
             <directory>test/SQLite</directory>
         </testsuite>
+        <testsuite name="sqlsrv">
+            <directory>test/SQLSrv</directory>
+        </testsuite>
     </testsuites>
 </phpunit>

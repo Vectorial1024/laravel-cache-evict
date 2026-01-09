@@ -40,6 +40,7 @@
         "ext-pdo": "*",
         "ext-pdo_mysql": "*",
         "ext-pdo_pgsql": "*",
+        "ext-pdo_sqlsrv": "*",
         "ext-sqlite3": "*",
         "phpunit/phpunit": "^10.4",
         "orchestra/testbench": "^8.0|^9.0|^10.0"
@@ -53,7 +54,8 @@
         "test-mariadb": "vendor/bin/phpunit --testsuite mariadb",
         "test-mysql": "vendor/bin/phpunit --testsuite mysql",
         "test-pgsql": "vendor/bin/phpunit --testsuite pgsql",
-        "test-sqlite": "vendor/bin/phpunit --testsuite sqlite"
+        "test-sqlite": "vendor/bin/phpunit --testsuite sqlite",
+        "test-sqlsrv": "vendor/bin/phpunit --testsuite sqlsrv"
     },
     "extra": {
         "laravel": {
