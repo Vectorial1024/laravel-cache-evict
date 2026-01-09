@@ -32,6 +32,12 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Setup PHP with PECL extension
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+        extensions: sqlsrv, pdo_sqlsrv
+
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
 
