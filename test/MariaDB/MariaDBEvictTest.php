@@ -79,7 +79,7 @@ SQL);
     {
         Config::set("cache.stores.$cacheName.driver", 'database');
         Config::set("cache.stores.$cacheName.table", 'cache');
-        Config::set("cache.stores.$cacheName.connection", 'mysql');
+        Config::set("cache.stores.$cacheName.connection", 'mariadb');
         Config::set("cache.stores.$cacheName.lock_connection", '');
         if ($intendedPrefix !== null) {
             Config::set("cache.stores.$cacheName.prefix", $intendedPrefix);
