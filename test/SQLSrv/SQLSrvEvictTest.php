@@ -25,6 +25,7 @@ class SQLSrvEvictTest extends AbstractDatabaseCacheEvictTestCase
         // in our CI/CD use case it is not convenient to even drop the database.
         // so the approach is to ensure we have a clean table for testing.
 
+        /*
         try {
             $this->pdo = new PDO("sqlsrv:server=(local);TrustServerCertificate=yes", $dbUser, $dbPass);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -40,6 +41,7 @@ class SQLSrvEvictTest extends AbstractDatabaseCacheEvictTestCase
         if (!$hasDb) {
             $this->pdo->exec("CREATE DATABASE laravel;");
         }
+        */
 
         // sqlsrv works by specifying the database during connection
         $this->pdo = null;
