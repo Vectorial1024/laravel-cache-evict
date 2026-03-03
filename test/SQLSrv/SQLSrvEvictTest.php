@@ -25,7 +25,6 @@ class SQLSrvEvictTest extends AbstractDatabaseCacheEvictTestCase
         // in our CI/CD use case it is not convenient to even drop the database.
         // so the approach is to ensure we have a clean table for testing.
 
-        /*
         try {
             $this->pdo = new PDO("sqlsrv:server=(local);TrustServerCertificate=yes", $dbUser, $dbPass);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -41,16 +40,9 @@ class SQLSrvEvictTest extends AbstractDatabaseCacheEvictTestCase
         if (!$hasDb) {
             $this->pdo->exec("CREATE DATABASE laravel;");
         }
-        */
 
-        // sqlsrv works by specifying the database during connection
-        $this->pdo = null;
-        try {
-            $this->pdo = new PDO("sqlsrv:server=(local);database=laravel;TrustServerCertificate=yes", $dbUser, $dbPass);
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $x) {
-            $this->fail("Could not use PDO: " . $x->getMessage());
-        }
+        // sqlsrv allows the USE keyword to switch to databases
+        $this->pdo->exec("USE laravel;");
 
         // CREATE TABLE IF NOT EXISTS
         // create the table once; whatever happens, truncate the table to ensure clean starting state.
