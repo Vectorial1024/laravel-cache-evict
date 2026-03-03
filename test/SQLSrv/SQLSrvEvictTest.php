@@ -55,22 +55,22 @@ class SQLSrvEvictTest extends AbstractDatabaseCacheEvictTestCase
         $this->pdo->exec(<<<SQL
             IF NOT EXISTS(SELECT name FROM sys.tables WHERE name = 'cache')
             BEGIN
-                CREATE TABLE IF NOT EXISTS cache (
-                    `key`	VARCHAR(255) NOT NULL,
-                    `value`	TEXT NOT NULL,
-                    `expiration`	INTEGER NOT NULL,
-                PRIMARY KEY(`key`));
+                CREATE TABLE cache (
+                    [key] VARCHAR(255) NOT NULL,
+                    [value] NVARCHAR(MAX) NOT NULL,
+                    [expiration] INT NOT NULL,
+                PRIMARY KEY([key]));
             END
 SQL);
         $this->pdo->exec("TRUNCATE TABLE cache");
         $this->pdo->exec(<<<SQL
             IF NOT EXISTS(SELECT name FROM sys.tables WHERE name = 'cache_locks')
             BEGIN
-                CREATE TABLE IF NOT EXISTS cache_locks (
-                    `key` VARCHAR(255) NOT NULL,
-                    `owner` VARCHAR(255) NOT NULL,
-                    `expiration` INTEGER NOT NULL,
-                PRIMARY KEY (`key`))
+                CREATE TABLE cache_locks (
+                    [key] VARCHAR(255) NOT NULL,
+                    [owner] VARCHAR(255) NOT NULL,
+                    [expiration] INT NOT NULL,
+                PRIMARY KEY ([key]))
             END
 SQL);
         $this->pdo->exec("TRUNCATE TABLE cache_locks");
