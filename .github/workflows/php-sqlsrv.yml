@@ -18,7 +18,7 @@ jobs:
 
     services:
       mssql:
-        image: mcr.microsoft.com/mssql/server:2022-latest
+        image: mcr.microsoft.com/mssql/server:2025-latest
         env:
           MSSQL_SA_PASSWORD: LaravelPassword!2026
           ACCEPT_EULA: 'Y'
