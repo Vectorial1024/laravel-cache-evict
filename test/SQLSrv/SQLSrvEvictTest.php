@@ -34,7 +34,7 @@ class SQLSrvEvictTest extends AbstractDatabaseCacheEvictTestCase
 
         // CREATE DATABASE IF NOT EXISTS
         $hasDb = false;
-        foreach ($this->pdo->query("SELECT DB_ID('LARAVEL')") as $row) {
+        foreach ($this->pdo->query("SELECT DB_ID('laravel')") as $row) {
             $hasDb = true;
         }
         if (!$hasDb) {
