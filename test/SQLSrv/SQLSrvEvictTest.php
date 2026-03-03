@@ -43,7 +43,7 @@ SQL);
         // sqlsrv works by specifying the database during connection
         $this->pdo = null;
         try {
-            $this->pdo = new PDO("sqlsrv:server=(local);database=laravel;TrustServerCertificate=1", $dbUser, $dbPass);
+            $this->pdo = new PDO("sqlsrv:server=(local);database=laravel;TrustServerCertificate=yes", $dbUser, $dbPass);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $x) {
             $this->fail("Could not use PDO: " . $x->getMessage());
