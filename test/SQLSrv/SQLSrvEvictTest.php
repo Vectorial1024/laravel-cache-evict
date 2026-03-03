@@ -26,7 +26,7 @@ class SQLSrvEvictTest extends AbstractDatabaseCacheEvictTestCase
         // so the approach is to ensure we have a clean table for testing.
 
         try {
-            $this->pdo = new PDO("sqlsrv:server=(local)", $dbUser, $dbPass);
+            $this->pdo = new PDO("sqlsrv:server=(local);TrustServerCertificate=yes", $dbUser, $dbPass);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $x) {
             $this->fail("Could not use PDO: " . $x->getMessage());
