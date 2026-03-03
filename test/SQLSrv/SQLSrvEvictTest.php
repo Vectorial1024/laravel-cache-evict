@@ -78,6 +78,8 @@ SQL);
         Config::set('database.connections.sqlsrv.username', $dbUser);
         Config::set('database.connections.sqlsrv.password', $dbPass);
         Config::set('database.connections.sqlsrv.charset', 'utf8');
+        // this is undocumented yet exists in the config file
+        Config::set('database.connections.sqlsrv.trust_server_certificate', true);
 
         // then, database cache
         $this->configureDatabaseCacheStoreForPrefix('database');
