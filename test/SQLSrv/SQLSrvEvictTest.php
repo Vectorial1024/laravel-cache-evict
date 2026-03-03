@@ -33,11 +33,19 @@ class SQLSrvEvictTest extends AbstractDatabaseCacheEvictTestCase
         }
 
         // CREATE DATABASE IF NOT EXISTS
-        $this->pdo->exec(<<<SQL
-            IF NOT EXISTS(SELECT name FROM sys.databases WHERE name = 'laravel')
-                CREATE DATABASE laravel;
-            GO
-SQL);
+        $hasDb = false;
+        $sql = <<<SQL
+            IF DB_ID('laravel') IS NOT NULL
+            BEGIN
+               PRINT "yes"
+            END
+SQL;
+        foreach ($this->pdo->query($sql) as $row) {
+            $hasDb = true;
+        }
+        if (!$hasDb) {
+            $this->pdo->exec("CREATE DATABASE laravel;");
+        }
 
         // sqlsrv works by specifying the database during connection
         $this->pdo = null;
