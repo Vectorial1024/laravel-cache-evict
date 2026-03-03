@@ -37,7 +37,7 @@ class SQLSrvEvictTest extends AbstractDatabaseCacheEvictTestCase
         $sql = <<<SQL
             IF DB_ID('laravel') IS NOT NULL
             BEGIN
-               PRINT "yes"
+               PRINT 'yes'
             END
 SQL;
         foreach ($this->pdo->query($sql) as $row) {
