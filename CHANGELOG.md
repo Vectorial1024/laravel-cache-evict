@@ -2,6 +2,8 @@
 Note: you may refer to `README.md` for description of features.
 
 ## Dev (WIP)
+
+## 2.1.0 (2026-03-20)
 - Declare compatibility with Laravel 13
 - Added CI scripts for the many Laravel database cache drivers to ensure correct vendor-specific behaviors (see [#20](https://github.com/Vectorial1024/laravel-cache-evict/issues/20))
 - Bumped PHP & Laravel requirements (see [#26](https://github.com/Vectorial1024/laravel-cache-evict/pull/26))
