@@ -7,6 +7,14 @@
 [![GitHub Repo Stars][github-stars-image]][github-repo-url]
 [![GitHub Sponsors][github-sponsors-image]][github-sponsors-url]
 
+[![GitHub Actions File Status][test-file-status-image]][github-actions-test-file-url]
+[![GitHub Actions MariaDB Status][test-mariadb-status-image]][github-actions-test-mariadb-url]
+[![GitHub Actions MySQL Inno Status][test-mysql-inno-status-image]][github-actions-test-mysql-inno-url]
+[![GitHub Actions MySQL LTS Status][test-mysql-lts-status-image]][github-actions-test-mysql-lts-url]
+[![GitHub Actions PgSQL Status][test-pgsql-status-image]][github-actions-test-pgsql-url]
+[![GitHub Actions SQLite Status][test-sqlite-status-image]][github-actions-test-sqlite-url]
+[![GitHub Actions Sql Server Status][test-sqlsrv-status-image]][github-actions-test-sqlsrv-url]
+
 Efficiently remove expired cache data in Laravel.
 
 ## Situation
@@ -148,6 +156,17 @@ PHPUnit (using `orchestra/testbench`) via Composer:
 composer run-script test
 ```
 
+The above command only runs the "core" test cases that ensures the core functionalities (e.g. selecting the correct eviction strategy) are working.
+
+To further test vendor-specific eviction correctness (managed by PHPUnit Test Suites), have a look at the various Composer scripts. Some of them are listed below:
+
+- `test-file`: tests for the Laravel file cache
+- `test-sqlite`: tests for the Laravel database cache (using SQLite)
+
+There are other scripts not listed here to test for e.g. MySQL and PostgreSQL, and several other vendors. See `composer.json` for more details.
+
+It may be more convenient to rely on GitHub Workflow to test/review eviction correctness.
+
 ## Frequently-asked questions (FAQ)
 
 ### How to define custom eviction strategies?
@@ -176,6 +195,13 @@ Feel free to run this tool e.g. hourly.
 [packagist-stats-url]: https://packagist.org/packages/vectorial1024/laravel-cache-evict/stats
 [github-repo-url]: https://github.com/Vectorial1024/laravel-cache-evict
 [github-actions-url]: https://github.com/Vectorial1024/laravel-cache-evict/actions/workflows/php.yml
+[github-actions-test-file-url]: https://github.com/Vectorial1024/laravel-cache-evict/actions/workflows/php-file.yml
+[github-actions-test-mariadb-url]: https://github.com/Vectorial1024/laravel-cache-evict/actions/workflows/php-mariadb.yml
+[github-actions-test-mysql-inno-url]: https://github.com/Vectorial1024/laravel-cache-evict/actions/workflows/php-mysql-inno.yml
+[github-actions-test-mysql-lts-url]: https://github.com/Vectorial1024/laravel-cache-evict/actions/workflows/php-mysql-lts.yml
+[github-actions-test-pgsql-url]: https://github.com/Vectorial1024/laravel-cache-evict/actions/workflows/php-pgsql.yml
+[github-actions-test-sqlite-url]: https://github.com/Vectorial1024/laravel-cache-evict/actions/workflows/php-sqlite.yml
+[github-actions-test-sqlsrv-url]: https://github.com/Vectorial1024/laravel-cache-evict/actions/workflows/php-sqlsrv.yml
 [github-sponsors-url]: https://github.com/sponsors/Vectorial1024
 
 [packagist-license-image]: https://img.shields.io/packagist/l/vectorial1024/laravel-cache-evict?style=plastic
@@ -183,5 +209,12 @@ Feel free to run this tool e.g. hourly.
 [packagist-downloads-image]: https://img.shields.io/packagist/dm/vectorial1024/laravel-cache-evict?style=plastic
 [php-version-image]: https://img.shields.io/packagist/dependency-v/vectorial1024/laravel-cache-evict/php?style=plastic&label=PHP
 [php-build-status-image]: https://img.shields.io/github/actions/workflow/status/Vectorial1024/laravel-cache-evict/php.yml?style=plastic
+[test-file-status-image]: https://img.shields.io/github/actions/workflow/status/Vectorial1024/laravel-cache-evict/php-file.yml?style=plastic&label=file
+[test-mariadb-status-image]: https://img.shields.io/github/actions/workflow/status/Vectorial1024/laravel-cache-evict/php-mariadb.yml?style=plastic&label=mariadb
+[test-mysql-inno-status-image]: https://img.shields.io/github/actions/workflow/status/Vectorial1024/laravel-cache-evict/php-mysql-inno.yml?style=plastic&label=mysql-inno
+[test-mysql-lts-status-image]: https://img.shields.io/github/actions/workflow/status/Vectorial1024/laravel-cache-evict/php-mysql-lts.yml?style=plastic&label=mysql-lts
+[test-pgsql-status-image]: https://img.shields.io/github/actions/workflow/status/Vectorial1024/laravel-cache-evict/php-pgsql.yml?style=plastic&label=pgsql
+[test-sqlite-status-image]: https://img.shields.io/github/actions/workflow/status/Vectorial1024/laravel-cache-evict/php-sqlite.yml?style=plastic&label=sqlite
+[test-sqlsrv-status-image]: https://img.shields.io/github/actions/workflow/status/Vectorial1024/laravel-cache-evict/php-sqlsrv.yml?style=plastic&label=sqlsrv
 [github-stars-image]: https://img.shields.io/github/stars/vectorial1024/laravel-cache-evict
 [github-sponsors-image]: https://img.shields.io/github/sponsors/Vectorial1024?style=plastic

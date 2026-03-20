@@ -1,4 +1,4 @@
-name: Test (Core)
+name: Test (File Cache)
 
 on:
   push:
@@ -44,4 +44,4 @@ jobs:
     # Docs: https://getcomposer.org/doc/articles/scripts.md
 
     - name: Run test suite
-      run: composer run-script test
+      run: composer run-script test-file
