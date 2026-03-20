@@ -5,6 +5,7 @@ Note: you may refer to `README.md` for description of features.
 - Added CI scripts for the many Laravel database caches to ensure correct vendor-specific behaviors (see [#20](https://github.com/Vectorial1024/laravel-cache-evict/issues/20))
 - Bumped PHP & Laravel requirements (see [#26](https://github.com/Vectorial1024/laravel-cache-evict/pull/26))
   - See `README.md` for version-bumping policy
+- Excluded MongoDB support; MongoDB has their own TTL indexes 
 
 ## 2.0.10 (2026-01-03)
 - Added Laravel events to listen for "eviction completed" events

@@ -16,6 +16,8 @@ class CacheEvictStrategies
 
     public const DRIVER_REDIS = 'redis';
 
+    public const DRIVER_MONGODB = 'mongodb';
+
     public const DRIVER_FILE = 'file';
 
     public const DRIVER_DATABASE = 'database';
@@ -44,6 +46,7 @@ class CacheEvictStrategies
         // and then re-register the default strategies
         self::registerDriverRefusedBecauseFeatureExists(self::DRIVER_MEMCACHED);
         self::registerDriverRefusedBecauseFeatureExists(self::DRIVER_REDIS);
+        self::registerDriverRefusedBecauseFeatureExists(self::DRIVER_MONGODB);
 
         self::registerDriverStrategy(self::DRIVER_FILE, FileEvictStrategy::class);
         self::registerDriverStrategy(self::DRIVER_DATABASE, DatabaseEvictStrategy::class);

@@ -47,7 +47,7 @@ The following cache drivers from `cache.php` are currently supported:
 - `database`
 - `file`
 
-Some drivers (e.g. `memcached`, `redis`) will never be supported because they have their own item eviction mechanisms; use those features instead of this tool!
+Some drivers (e.g. `memcached`, `redis`, `mongodb`, etc.) will never be supported because they have their own item eviction mechanisms; use those features instead of this tool!
 
 Custom eviction strategies can be defined for other cache drivers that does not have their own eviction mechanisms (see FAQ section).
 

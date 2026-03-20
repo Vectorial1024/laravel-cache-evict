@@ -41,6 +41,9 @@ class CacheEvictStrategiesTest extends TestCase
         $this->expectException(EvictionRefusedFeatureExistsException::class);
         $strategy = CacheEvictStrategies::getEvictionStrategy('', CacheEvictStrategies::DRIVER_REDIS);
 
+        $this->expectException(EvictionRefusedFeatureExistsException::class);
+        $strategy = CacheEvictStrategies::getEvictionStrategy('', CacheEvictStrategies::DRIVER_MONGODB);
+
         // mock as if we have some proper config
         $strategy = CacheEvictStrategies::getEvictionStrategy('file', CacheEvictStrategies::DRIVER_FILE);
         $this->assertInstanceOf(FileEvictStrategy::class, $strategy);
