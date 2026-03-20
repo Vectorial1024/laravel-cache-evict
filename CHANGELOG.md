@@ -2,7 +2,8 @@
 Note: you may refer to `README.md` for description of features.
 
 ## Dev (WIP)
-- Added CI scripts for the many Laravel database caches to ensure correct vendor-specific behaviors (see [#20](https://github.com/Vectorial1024/laravel-cache-evict/issues/20))
+- Declare compatibility with Laravel 13
+- Added CI scripts for the many Laravel database cache drivers to ensure correct vendor-specific behaviors (see [#20](https://github.com/Vectorial1024/laravel-cache-evict/issues/20))
 - Bumped PHP & Laravel requirements (see [#26](https://github.com/Vectorial1024/laravel-cache-evict/pull/26))
   - See `README.md` for version-bumping policy
 - Excluded MongoDB support; MongoDB has their own TTL indexes 
