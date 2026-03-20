@@ -54,6 +54,18 @@ Custom eviction strategies can be defined for other cache drivers that does not 
 ### Change log
 Please see `CHANGELOG.md`.
 
+### Version-Bumping Policy
+
+To address deprecations and encourage code modernization, we may rarely bump the major/minor version number to require a newer set of PHP and Laravel version.
+
+This doesn't happen often, and most of the time, this version-bumping will not introduce breaking changes.
+
+| Library | PHP    | Laravel    | Notes                                                  |
+|---------|--------|------------|--------------------------------------------------------|
+| `2.2.x` | 8.9?   | 16?        | Specuative                                             |
+| `2.1.x` | `^8.5` | 12, 13     | Reach for Laravel 12 first before reaching for `2.1.x` |
+| `2.0.x` | `^8.1` | 10, 11, 12 | None                                                   |
+
 ## Usage
 
 You may run this in the command line:

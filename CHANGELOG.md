@@ -3,6 +3,8 @@ Note: you may refer to `README.md` for description of features.
 
 ## Dev (WIP)
 - Added CI scripts for the many Laravel database caches to ensure correct vendor-specific behaviors 
+- Bumped PHP & Laravel requirements
+  - See `README.md` for version-bumping policy
 
 ## 2.0.10 (2026-01-03)
 - Added Laravel events to listen for "eviction completed" events
