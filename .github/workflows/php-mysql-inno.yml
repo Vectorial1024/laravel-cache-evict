@@ -27,7 +27,7 @@ jobs:
 
     - uses: shogo82148/actions-setup-mysql@v1
       with:
-        mysql-version: 'mysql-9.0'
+        mysql-version: 'mysql-9.6'
         user: 'testuser'
         password: 'testpass'
 
