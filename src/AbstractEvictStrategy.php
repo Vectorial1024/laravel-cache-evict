@@ -18,7 +18,7 @@ abstract class AbstractEvictStrategy
     ) {
         // default should be null output; useful when somehow calling this outside of Artisan console context
         // does not affect actual behavior
-        // todo good opportunity to refactor with property hooks in PHP 8.4
+        // we cannot use property hooks here because the write scope is greater than the read scope
         $this->output = new OutputStyle(new StringInput(''), new NullOutput());
     }
 
