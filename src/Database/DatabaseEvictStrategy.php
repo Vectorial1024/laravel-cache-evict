@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Vectorial1024\LaravelCacheEvict\Database;
 
+use Deprecated;
 use Generator;
 use Illuminate\Cache\DatabaseStore;
 use Illuminate\Database\Connection;
@@ -140,6 +141,7 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
      * @deprecated This method is deprecated in favor of chunked deletion. Currently, it fetches and yields nothing.
      * @return Generator<mixed, object, mixed, void>
      */
+    #[Deprecated("This method is deprecated in favor of chunked deletion. Currently, it fetches and yields nothing.")]
     protected function yieldCacheTableItems(): Generator
     {
         yield new stdClass();
