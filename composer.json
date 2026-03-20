@@ -32,7 +32,7 @@
         }
     ],
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "illuminate/support": "^12.0",
         "wilderborn/partyline": "^1.0"
     },
@@ -42,7 +42,7 @@
         "ext-pdo_pgsql": "*",
         "ext-pdo_sqlsrv": "*",
         "ext-sqlite3": "*",
-        "phpunit/phpunit": "^11.0",
+        "phpunit/phpunit": "^12.0",
         "orchestra/testbench": "^10.0"
     },
     "suggest": {
