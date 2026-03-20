@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Vectorial1024\LaravelCacheEvict\Database;
 
+use Deprecated;
+use Generator;
 use Illuminate\Cache\DatabaseStore;
 use Illuminate\Database\Connection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Symfony\Component\Console\Helper\ProgressBar;
+use Override;
+use stdClass;
 use Vectorial1024\LaravelCacheEvict\AbstractEvictStrategy;
 use Wilderborn\Partyline\Facade as Partyline;
 
@@ -64,6 +67,7 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
         return $this->elapsedTime;
     }
 
+    #[Override]
     public function execute(): void
     {
         // read the cache config and set up targets
@@ -135,20 +139,21 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
      * 
      * This method will return the actual key (with the cache prefix if exists) of the entry.
      * @deprecated This method is deprecated in favor of chunked deletion. Currently, it fetches and yields nothing.
-     * @return \Generator<mixed, object, mixed, void>
+     * @return Generator<mixed, object, mixed, void>
      */
-    protected function yieldCacheTableItems(): \Generator
+    #[Deprecated("This method is deprecated in favor of chunked deletion. Currently, it fetches and yields nothing.")]
+    protected function yieldCacheTableItems(): Generator
     {
-        yield new \stdClass();
+        yield new stdClass();
     }
 
     /**
      * Yields the next chunk of many items from the cache table that belongs to this cache.
      *
      * This method will return the actual keys (with the cache prefix if exists) of the entries.
-     * @return \Generator<mixed, array, mixed, void>
+     * @return Generator<mixed, array, mixed, void>
      */
-    protected function yieldCacheTableChunks(): \Generator
+    protected function yieldCacheTableChunks(): Generator
     {
         // there might be a prefix for the cache store!
         $cachePrefix = $this->cachePrefix;

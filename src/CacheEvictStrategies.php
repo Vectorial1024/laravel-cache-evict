@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Vectorial1024\LaravelCacheEvict;
 
+use InvalidArgumentException;
 use Vectorial1024\LaravelCacheEvict\Database\DatabaseEvictStrategy;
 use Vectorial1024\LaravelCacheEvict\File\FileEvictStrategy;
 
@@ -12,13 +13,15 @@ use Vectorial1024\LaravelCacheEvict\File\FileEvictStrategy;
  */
 class CacheEvictStrategies
 {
-    public const DRIVER_MEMCACHED = 'memcached';
+    public const string DRIVER_MEMCACHED = 'memcached';
 
-    public const DRIVER_REDIS = 'redis';
+    public const string DRIVER_REDIS = 'redis';
 
-    public const DRIVER_FILE = 'file';
+    public const string DRIVER_MONGODB = 'mongodb';
 
-    public const DRIVER_DATABASE = 'database';
+    public const string DRIVER_FILE = 'file';
+
+    public const string DRIVER_DATABASE = 'database';
 
     /**
      * @var array<string, class-string> the map of driver to eviction strategy
@@ -35,7 +38,7 @@ class CacheEvictStrategies
      * 
      * This may be useful when doing unit testing.
      */
-    public static function initOrReset()
+    public static function initOrReset(): void
     {
         // reset the memory first
         self::$strategyMap = [];
@@ -44,6 +47,7 @@ class CacheEvictStrategies
         // and then re-register the default strategies
         self::registerDriverRefusedBecauseFeatureExists(self::DRIVER_MEMCACHED);
         self::registerDriverRefusedBecauseFeatureExists(self::DRIVER_REDIS);
+        self::registerDriverRefusedBecauseFeatureExists(self::DRIVER_MONGODB);
 
         self::registerDriverStrategy(self::DRIVER_FILE, FileEvictStrategy::class);
         self::registerDriverStrategy(self::DRIVER_DATABASE, DatabaseEvictStrategy::class);
@@ -54,13 +58,13 @@ class CacheEvictStrategies
      * @param string $driverName
      * @param class-string $strategyClass
      */
-    public static function registerDriverStrategy(string $driverName, string $strategyClass)
+    public static function registerDriverStrategy(string $driverName, string $strategyClass): void
     {
         if (isset(self::$strategyMap[$driverName])) {
             return;
         }
         if (!is_subclass_of($strategyClass, AbstractEvictStrategy::class)) {
-            throw new \InvalidArgumentException("The provided eviction strategy for '{$driverName}' must extend " . AbstractEvictStrategy::class . ".");
+            throw new InvalidArgumentException("The provided eviction strategy for '{$driverName}' must extend " . AbstractEvictStrategy::class . ".");
         }
         self::$strategyMap[$driverName] = $strategyClass;
     }
@@ -71,7 +75,7 @@ class CacheEvictStrategies
      * Example of this type of drivers: "redis".
      * @param string $driverName
      */
-    public static function registerDriverRefusedBecauseFeatureExists(string $driverName)
+    public static function registerDriverRefusedBecauseFeatureExists(string $driverName): void
     {
         if (!isset(self::$wontDoMap[$driverName])) {
             self::$wontDoMap[$driverName] = true;

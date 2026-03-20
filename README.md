@@ -47,12 +47,24 @@ The following cache drivers from `cache.php` are currently supported:
 - `database`
 - `file`
 
-Some drivers (e.g. `memcached`, `redis`) will never be supported because they have their own item eviction mechanisms; use those features instead of this tool!
+Some drivers (e.g. `memcached`, `redis`, `mongodb`, etc.) will never be supported because they have their own item eviction mechanisms; use those features instead of this tool!
 
 Custom eviction strategies can be defined for other cache drivers that does not have their own eviction mechanisms (see FAQ section).
 
 ### Change log
 Please see `CHANGELOG.md`.
+
+### Version-Bumping Policy
+
+To address deprecations and encourage code modernization, we may rarely bump the major/minor version number to require a newer set of PHP and Laravel version.
+
+This doesn't happen often, and most of the time, this version-bumping will not introduce breaking changes.
+
+| Library | PHP    | Laravel    | Notes                                                  |
+|---------|--------|------------|--------------------------------------------------------|
+| `2.2.x` | 8.9?   | 16?        | Specuative                                             |
+| `2.1.x` | `^8.5` | 12, 13     | Reach for Laravel 12 first before reaching for `2.1.x` |
+| `2.0.x` | `^8.1` | 10, 11, 12 | None                                                   |
 
 ## Usage
 

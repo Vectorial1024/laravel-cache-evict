@@ -3,6 +3,7 @@
 namespace Vectorial1024\LaravelCacheEvict\Test\SQLSrv;
 
 use Illuminate\Support\Facades\Config;
+use Override;
 use PDO;
 use PDOException;
 use Vectorial1024\LaravelCacheEvict\CacheEvictStrategies;
@@ -16,9 +17,9 @@ class SQLSrvEvictTest extends AbstractDatabaseCacheEvictTestCase
     private string $dbUser = 'sa';
     private string $dbPass = 'LaravelPassword!2026';
 
+    #[Override]
     protected function setUpCache(): void
     {
-        $dbHost = $this->dbHost;
         $dbUser = $this->dbUser;
         $dbPass = $this->dbPass;
 
@@ -85,6 +86,7 @@ SQL);
         $this->configureDatabaseCacheStoreForPrefix('database');
     }
 
+    #[Override]
     protected function tearDownCache(): void
     {
         // in our CI/CD use case it is not convenient to even drop the database.
@@ -93,16 +95,19 @@ SQL);
         // we also reuse the connection so we are sure we are really in the laravel database
     }
 
+    #[Override]
     protected function getStoreName(): string
     {
         return "database";
     }
 
+    #[Override]
     protected function getCacheDriverName(): string
     {
         return CacheEvictStrategies::DRIVER_DATABASE;
     }
 
+    #[Override]
     function configureDatabaseCacheStoreForPrefix(string $cacheName, string|null $intendedPrefix = null): void
     {
         Config::set("cache.stores.$cacheName.driver", 'database');

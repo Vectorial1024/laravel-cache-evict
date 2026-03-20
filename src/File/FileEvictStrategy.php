@@ -8,7 +8,7 @@ use DirectoryIterator;
 use ErrorException;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\Console\Helper\ProgressBar;
+use Override;
 use UnexpectedValueException;
 use Vectorial1024\LaravelCacheEvict\AbstractEvictStrategy;
 use Wilderborn\Partyline\Facade as Partyline;
@@ -73,6 +73,7 @@ class FileEvictStrategy extends AbstractEvictStrategy
         return $this->elapsedTime;
     }
 
+    #[Override]
     public function execute(): void
     {
         // read the cache config and set up targets
@@ -89,7 +90,6 @@ class FileEvictStrategy extends AbstractEvictStrategy
         Partyline::info("Found " . count($allDirs) . " cache directories to evict expired items; processing...");
 
         // create a progress bar to display our progress
-        /** @var ProgressBar $progressBar */
         $progressBar = $this->output->createProgressBar();
         $progressBar->setMaxSteps(count($allDirs));
 
@@ -134,7 +134,7 @@ class FileEvictStrategy extends AbstractEvictStrategy
         // remove files inside directory
         try {
             $dirIter = new DirectoryIterator($localPath);
-        } catch (UnexpectedValueException $x) {
+        } catch (UnexpectedValueException) {
             // this indicates the directory is gone
             // this might be caused by race conditions
             // this should be rare (later execution catching up to earlier run), but better be safe than sorry
@@ -142,7 +142,7 @@ class FileEvictStrategy extends AbstractEvictStrategy
             // then we have nothing to do here 
             return;
         }
-        /** @var \SplFileInfo $fileInfo */
+        /** @var DirectoryIterator $fileInfo */
         foreach ($dirIter as $fileInfo) {
             if ($fileInfo->isDot()) {
                 continue;

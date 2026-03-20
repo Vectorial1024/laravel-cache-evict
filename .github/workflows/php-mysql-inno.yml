@@ -12,7 +12,7 @@ permissions:
 jobs:
   build:
 
-    # ubuntu-latest has PHP 8.1
+    # ubuntu-latest has PHP 8.3
     # see https://github.com/marketplace/actions/setup-php-action
     runs-on: ubuntu-latest
 
@@ -22,12 +22,12 @@ jobs:
     - name: Setup PHP with PECL extension
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.1'
+        php-version: '8.5'
         extensions: sqlsrv, pdo_sqlsrv
 
     - uses: shogo82148/actions-setup-mysql@v1
       with:
-        mysql-version: 'mysql-9.0'
+        mysql-version: 'mysql-9.6'
         user: 'testuser'
         password: 'testpass'
 
