@@ -13,15 +13,15 @@ use Vectorial1024\LaravelCacheEvict\File\FileEvictStrategy;
  */
 class CacheEvictStrategies
 {
-    public const DRIVER_MEMCACHED = 'memcached';
+    public const string DRIVER_MEMCACHED = 'memcached';
 
-    public const DRIVER_REDIS = 'redis';
+    public const string DRIVER_REDIS = 'redis';
 
-    public const DRIVER_MONGODB = 'mongodb';
+    public const string DRIVER_MONGODB = 'mongodb';
 
-    public const DRIVER_FILE = 'file';
+    public const string DRIVER_FILE = 'file';
 
-    public const DRIVER_DATABASE = 'database';
+    public const string DRIVER_DATABASE = 'database';
 
     /**
      * @var array<string, class-string> the map of driver to eviction strategy
