@@ -9,8 +9,6 @@ use ErrorException;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use Override;
-use SplFileInfo;
-use Symfony\Component\Console\Helper\ProgressBar;
 use UnexpectedValueException;
 use Vectorial1024\LaravelCacheEvict\AbstractEvictStrategy;
 use Wilderborn\Partyline\Facade as Partyline;
