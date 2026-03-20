@@ -3,11 +3,13 @@
 namespace Vectorial1024\LaravelCacheEvict\Test\File;
 
 use Illuminate\Support\Facades\Config;
+use Override;
 use Vectorial1024\LaravelCacheEvict\CacheEvictStrategies;
 use Vectorial1024\LaravelCacheEvict\Test\Core\AbstractCacheEvictTestCase;
 
 class FileEvictTest extends AbstractCacheEvictTestCase
 {
+    #[Override]
     protected function setUpCache(): void
     {
         // configure the cache directory
@@ -19,16 +21,19 @@ class FileEvictTest extends AbstractCacheEvictTestCase
         Config::set('cache.stores.file.lock_path', $fileCacheDir);
     }
 
+    #[Override]
     protected function tearDownCache(): void
     {
         // we should remove the files in the cache directory, but it seems it is safe to not do it
     }
 
+    #[Override]
     protected function getStoreName(): string
     {
         return "file";
     }
 
+    #[Override]
     protected function getCacheDriverName(): string
     {
         return CacheEvictStrategies::DRIVER_FILE;

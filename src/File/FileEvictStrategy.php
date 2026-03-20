@@ -8,6 +8,7 @@ use DirectoryIterator;
 use ErrorException;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
+use Override;
 use SplFileInfo;
 use Symfony\Component\Console\Helper\ProgressBar;
 use UnexpectedValueException;
@@ -74,6 +75,7 @@ class FileEvictStrategy extends AbstractEvictStrategy
         return $this->elapsedTime;
     }
 
+    #[Override]
     public function execute(): void
     {
         // read the cache config and set up targets

@@ -9,6 +9,7 @@ use Illuminate\Cache\DatabaseStore;
 use Illuminate\Database\Connection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Override;
 use stdClass;
 use Vectorial1024\LaravelCacheEvict\AbstractEvictStrategy;
 use Wilderborn\Partyline\Facade as Partyline;
@@ -65,6 +66,7 @@ class DatabaseEvictStrategy extends AbstractEvictStrategy
         return $this->elapsedTime;
     }
 
+    #[Override]
     public function execute(): void
     {
         // read the cache config and set up targets

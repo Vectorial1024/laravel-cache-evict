@@ -3,6 +3,7 @@
 namespace Vectorial1024\LaravelCacheEvict\Test\SQLite;
 
 use Illuminate\Support\Facades\Config;
+use Override;
 use SQLite3;
 use Vectorial1024\LaravelCacheEvict\CacheEvictStrategies;
 use Vectorial1024\LaravelCacheEvict\Test\Core\AbstractDatabaseCacheEvictTestCase;
@@ -11,6 +12,7 @@ class SQLiteEvictTest extends AbstractDatabaseCacheEvictTestCase
 {
     private string $sqliteDbName;
 
+    #[Override]
     protected function setUpCache(): void
     {
         // we need to set up an SQLite db file on disk, so that the test script can correctly use it
@@ -41,21 +43,25 @@ class SQLiteEvictTest extends AbstractDatabaseCacheEvictTestCase
         $this->configureDatabaseCacheStoreForPrefix('database');
     }
 
+    #[Override]
     protected function tearDownCache(): void
     {
         unlink($this->sqliteDbName);
     }
 
+    #[Override]
     protected function getStoreName(): string
     {
         return "database";
     }
 
+    #[Override]
     protected function getCacheDriverName(): string
     {
         return CacheEvictStrategies::DRIVER_DATABASE;
     }
 
+    #[Override]
     function configureDatabaseCacheStoreForPrefix(string $cacheName, string|null $intendedPrefix = null): void
     {
         Config::set("cache.stores.$cacheName.driver", 'database');

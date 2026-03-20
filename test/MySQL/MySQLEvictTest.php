@@ -3,6 +3,7 @@
 namespace Vectorial1024\LaravelCacheEvict\Test\MySQL;
 
 use Illuminate\Support\Facades\Config;
+use Override;
 use PDO;
 use PDOException;
 use Vectorial1024\LaravelCacheEvict\CacheEvictStrategies;
@@ -11,7 +12,8 @@ use Vectorial1024\LaravelCacheEvict\Test\Core\AbstractDatabaseCacheEvictTestCase
 class MySQLEvictTest extends AbstractDatabaseCacheEvictTestCase
 {
     private PDO|null $pdo;
-    
+
+    #[Override]
     protected function setUpCache(): void
     {
         $dbHost = '127.0.0.1';
@@ -56,6 +58,7 @@ SQL);
         $this->configureDatabaseCacheStoreForPrefix('database');
     }
 
+    #[Override]
     protected function tearDownCache(): void
     {
         // drop database
@@ -65,16 +68,19 @@ SQL);
         $this->pdo = null;
     }
 
+    #[Override]
     protected function getStoreName(): string
     {
         return "database";
     }
 
+    #[Override]
     protected function getCacheDriverName(): string
     {
         return CacheEvictStrategies::DRIVER_DATABASE;
     }
 
+    #[Override]
     function configureDatabaseCacheStoreForPrefix(string $cacheName, string|null $intendedPrefix = null): void
     {
         Config::set("cache.stores.$cacheName.driver", 'database');
