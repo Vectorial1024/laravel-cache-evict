@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Vectorial1024\LaravelCacheEvict;
 
+use InvalidArgumentException;
 use Vectorial1024\LaravelCacheEvict\Database\DatabaseEvictStrategy;
 use Vectorial1024\LaravelCacheEvict\File\FileEvictStrategy;
 
@@ -37,7 +38,7 @@ class CacheEvictStrategies
      * 
      * This may be useful when doing unit testing.
      */
-    public static function initOrReset()
+    public static function initOrReset(): void
     {
         // reset the memory first
         self::$strategyMap = [];
@@ -57,13 +58,13 @@ class CacheEvictStrategies
      * @param string $driverName
      * @param class-string $strategyClass
      */
-    public static function registerDriverStrategy(string $driverName, string $strategyClass)
+    public static function registerDriverStrategy(string $driverName, string $strategyClass): void
     {
         if (isset(self::$strategyMap[$driverName])) {
             return;
         }
         if (!is_subclass_of($strategyClass, AbstractEvictStrategy::class)) {
-            throw new \InvalidArgumentException("The provided eviction strategy for '{$driverName}' must extend " . AbstractEvictStrategy::class . ".");
+            throw new InvalidArgumentException("The provided eviction strategy for '{$driverName}' must extend " . AbstractEvictStrategy::class . ".");
         }
         self::$strategyMap[$driverName] = $strategyClass;
     }
@@ -74,7 +75,7 @@ class CacheEvictStrategies
      * Example of this type of drivers: "redis".
      * @param string $driverName
      */
-    public static function registerDriverRefusedBecauseFeatureExists(string $driverName)
+    public static function registerDriverRefusedBecauseFeatureExists(string $driverName): void
     {
         if (!isset(self::$wontDoMap[$driverName])) {
             self::$wontDoMap[$driverName] = true;

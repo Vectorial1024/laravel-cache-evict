@@ -24,7 +24,7 @@ class CacheEvictStrategiesTest extends TestCase
         CacheEvictStrategies::initOrReset();
     }
 
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         // load required package providers for partyline to work
         return [
@@ -36,13 +36,13 @@ class CacheEvictStrategiesTest extends TestCase
     {
         // store name does not matter at the moment
         $this->expectException(EvictionRefusedFeatureExistsException::class);
-        $strategy = CacheEvictStrategies::getEvictionStrategy('', CacheEvictStrategies::DRIVER_MEMCACHED);
+        CacheEvictStrategies::getEvictionStrategy('', CacheEvictStrategies::DRIVER_MEMCACHED);
 
         $this->expectException(EvictionRefusedFeatureExistsException::class);
-        $strategy = CacheEvictStrategies::getEvictionStrategy('', CacheEvictStrategies::DRIVER_REDIS);
+        CacheEvictStrategies::getEvictionStrategy('', CacheEvictStrategies::DRIVER_REDIS);
 
         $this->expectException(EvictionRefusedFeatureExistsException::class);
-        $strategy = CacheEvictStrategies::getEvictionStrategy('', CacheEvictStrategies::DRIVER_MONGODB);
+        CacheEvictStrategies::getEvictionStrategy('', CacheEvictStrategies::DRIVER_MONGODB);
 
         // mock as if we have some proper config
         $strategy = CacheEvictStrategies::getEvictionStrategy('file', CacheEvictStrategies::DRIVER_FILE);
@@ -75,9 +75,9 @@ class CacheEvictStrategiesTest extends TestCase
         $strategy = CacheEvictStrategies::getEvictionStrategy('file2', 'file2');
         $this->assertInstanceOf(FileEvictStrategy::class, $strategy);
         // then unset them
-        Config::set('cache.stores.file2.driver', null);
-        Config::set('cache.stores.file2.path', null);
-        Config::set('cache.stores.file2.lock_path', null);
+        Config::set('cache.stores.file2.driver');
+        Config::set('cache.stores.file2.path');
+        Config::set('cache.stores.file2.lock_path');
     }
 
     // ---
@@ -85,24 +85,20 @@ class CacheEvictStrategiesTest extends TestCase
     public function call($method, $uri, $parameters = [], $files = [], $server = [], $content = null, $changeHistory = true)
     {
         // pass
-        return;
     }
 
     public function be(Authenticatable $user, $driver = null)
     {
         // pass
-        return;
     }
 
     public function seed($class = 'DatabaseSeeder')
     {
         // pass
-        return;
     }
 
     public function artisan($command, $parameters = [])
     {
         // pass
-        return;
     }
 }

@@ -18,7 +18,6 @@ class SQLSrvEvictTest extends AbstractDatabaseCacheEvictTestCase
 
     protected function setUpCache(): void
     {
-        $dbHost = $this->dbHost;
         $dbUser = $this->dbUser;
         $dbPass = $this->dbPass;
 

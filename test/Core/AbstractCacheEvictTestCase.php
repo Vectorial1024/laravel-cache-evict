@@ -35,7 +35,7 @@ abstract class AbstractCacheEvictTestCase extends TestCase
         $this->tearDownCache();
     }
 
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         // load required package providers for partyline to work
         return [

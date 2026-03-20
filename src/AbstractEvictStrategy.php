@@ -25,7 +25,7 @@ abstract class AbstractEvictStrategy
     /**
      * Sets the console output of this strategy; this may be helpful when creating progress bars.
      */
-    public function setOutput(OutputStyle $output)
+    public function setOutput(OutputStyle $output): void
     {
         $this->output = $output;
     }
