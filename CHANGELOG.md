@@ -3,6 +3,9 @@ Note: you may refer to `README.md` for description of features.
 
 ## Dev (WIP)
 
+## 2.1.1 (2026-04-21)
+- GitHub security advisory (https://github.com/advisories/GHSA-qrr6-mg7r-m243)
+
 ## 2.1.0 (2026-03-20)
 - Declare compatibility with Laravel 13
 - Added CI scripts for the many Laravel database cache drivers to ensure correct vendor-specific behaviors (see [#20](https://github.com/Vectorial1024/laravel-cache-evict/issues/20))
