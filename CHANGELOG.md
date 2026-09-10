@@ -2,6 +2,8 @@
 Note: you may refer to `README.md` for description of features.
 
 ## Dev (WIP)
+- Relaxed PHP requirements (see [#29](https://github.com/Vectorial1024/laravel-cache-evict/pull/29))
+  - See `README.md` for version-bumping policy
 
 ## 2.1.1 (2026-04-21)
 - GitHub security advisory (https://github.com/advisories/GHSA-qrr6-mg7r-m243)

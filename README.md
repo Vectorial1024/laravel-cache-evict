@@ -60,11 +60,13 @@ To address deprecations and encourage code modernization, we may rarely bump the
 
 This doesn't happen often, and most of the time, this version-bumping will not introduce breaking changes.
 
-| Library | PHP    | Laravel    | Notes                                                  |
-|---------|--------|------------|--------------------------------------------------------|
-| `2.2.x` | 8.9?   | 16?        | Specuative                                             |
-| `2.1.x` | `^8.5` | 12, 13     | Reach for Laravel 12 first before reaching for `2.1.x` |
-| `2.0.x` | `^8.1` | 10, 11, 12 | None                                                   |
+| Library | PHP    | Laravel    | Notes                                  |
+|---------|--------|------------|----------------------------------------|
+| `2.2.x` | 8.5?   | 15?        | Specuative                             |
+| `2.1.x` | `^8.3` | 12, 13     | First get Laravel 12, then get `2.1.x` |
+| `2.0.x` | `^8.1` | 10, 11, 12 | None                                   |
+
+A number of factors will be considered when deciding the version requirements, such as Ubuntu LTS release timings.
 
 ## Usage
 
