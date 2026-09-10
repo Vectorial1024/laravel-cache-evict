@@ -2,6 +2,8 @@
 Note: you may refer to `README.md` for description of features.
 
 ## Dev (WIP)
+
+## 2.1.2 (2026-09-10)
 - Relaxed PHP requirements (see [#29](https://github.com/Vectorial1024/laravel-cache-evict/pull/29))
   - See `README.md` for version-bumping policy
 
