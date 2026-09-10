@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vectorial1024\LaravelCacheEvict\Database;
 
-use Deprecated;
+//use Deprecated;
 use Generator;
 use Illuminate\Cache\DatabaseStore;
 use Illuminate\Database\Connection;
