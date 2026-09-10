@@ -4,6 +4,9 @@ namespace Vectorial1024\LaravelCacheEvict;
 
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * @noinspection PhpUnused
+ */
 class CacheEvictServiceProvider extends ServiceProvider
 {
     /**
